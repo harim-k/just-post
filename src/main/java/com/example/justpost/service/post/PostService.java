@@ -2,12 +2,12 @@ package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.DownloadType;
-import com.example.justpost.domain.handler.CuPostHandler;
-import com.example.justpost.domain.handler.GsPostHandler;
-import com.example.justpost.domain.handler.PostHandler;
-import com.example.justpost.domain.handler.PostHandlerFactory;
-import com.example.justpost.domain.post.converter.PostConverter;
-import com.example.justpost.domain.post.converter.PostConverterFactory;
+import com.example.justpost.domain.post.CuPostHandler;
+import com.example.justpost.domain.post.GsPostHandler;
+import com.example.justpost.domain.post.PostHandler;
+import com.example.justpost.domain.post.PostHandlerFactory;
+import com.example.justpost.domain.store.post.PostConverter;
+import com.example.justpost.domain.store.post.PostConverterFactory;
 import com.example.justpost.domain.utils.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

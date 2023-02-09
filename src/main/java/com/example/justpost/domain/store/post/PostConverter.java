@@ -1,4 +1,4 @@
-package com.example.justpost.domain.post.converter;
+package com.example.justpost.domain.store.post;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
@@ -9,7 +9,9 @@ public abstract class PostConverter {
 
     public abstract List<List<String>> convert(MultipartFile file) throws Exception;
 
-    void addToPost(List<List<String>> postValues, List<String> postRowValues, String 수량, String 품목) {
+    void addToPost(List<List<String>> postValues,
+                   List<String> postRowValues,
+                   String 수량, String 품목) {
         int 배송요청사항Index = 6;
         int sameOrderRowIndex = getSameOrderRowIndex(postValues, postRowValues);
 

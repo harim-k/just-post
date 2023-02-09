@@ -22,7 +22,8 @@ public class FileUtil {
 
     public static final String POST_FILE_PATH = "src/main/resources/post/";
     public static final String AFTER_POST_FILE_PATH = "src/main/resources/afterPost/";
-    public static final String TEMPLATE_FILE_PATH = "src/main/resources/templates/";
+    public static final String POST_TEMPLATE_FILE_PATH = "src/main/resources/templates/post/";
+    public static final String AFTER_POST_TEMPLATE_FILE_PATH = "src/main/resources/templates/afterPost/";
     public static final String MERGED_EXCEL_FILE_NAME = "mergedExcelFile.xlsx";
 
 

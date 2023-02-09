@@ -1,4 +1,4 @@
-package com.example.justpost.domain.afterPost;
+package com.example.justpost.domain.store.afterPost;
 
 import com.example.justpost.domain.Invoice;
 import com.example.justpost.domain.utils.ExcelUtil;
@@ -44,7 +44,7 @@ public class NaverAfterPostConverter extends AfterPostConverter {
     }
 
     private String getAfterPostTemplateFilePath() {
-        return FileUtil.TEMPLATE_FILE_PATH + AFTER_POST_TEMPLATE_FILE_NAME;
+        return FileUtil.AFTER_POST_TEMPLATE_FILE_PATH + AFTER_POST_TEMPLATE_FILE_NAME;
     }
 
     public List<List<String>> convert(MultipartFile file,

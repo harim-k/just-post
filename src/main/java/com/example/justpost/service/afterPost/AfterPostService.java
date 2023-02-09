@@ -1,11 +1,10 @@
 package com.example.justpost.service.afterPost;
 
 import com.example.justpost.domain.ConvertType;
-import com.example.justpost.domain.DownloadType;
 import com.example.justpost.domain.Invoice;
-import com.example.justpost.domain.afterPost.AfterPostConverter;
-import com.example.justpost.domain.afterPost.AfterPostConverterFactory;
-import com.example.justpost.domain.handler.PostHandlerFactory;
+import com.example.justpost.domain.store.afterPost.AfterPostConverter;
+import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
+import com.example.justpost.domain.post.PostHandlerFactory;
 import com.example.justpost.domain.utils.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,4 +1,4 @@
-package com.example.justpost.domain.post.converter;
+package com.example.justpost.domain.store.post;
 
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -7,16 +7,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class AblyPostConverter extends PostConverter {
-    public static final int SHEET_INDEX = 1;
+public class CoupangPostConverter extends PostConverter {
+    public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
-
 
     @Override
     public List<List<String>> convert(MultipartFile file) throws Exception {
@@ -26,18 +26,18 @@ public class AblyPostConverter extends PostConverter {
         Sheet orderSheet = orderWorkbook.getSheetAt(SHEET_INDEX);
         Row orderHeaderRow = orderSheet.getRow(HEADER_ROW_INDEX);
 
-        int 수취인명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인명");
+        int 수취인명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인이름");
         int 우편번호ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "우편번호");
-        int 기본배송지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송지 주소");
+        int 기본배송지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인 주소");
 
-        int 수취인연락처1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인 연락처");
-        int 수취인연락처2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "연락처");
+        int 수취인연락처1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인전화번호");
+        int 수취인연락처2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "구매자전화번호");
 
-        int 수량ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수량");
-        int 배송메세지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송 메모");
+        int 수량ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "구매수(수량)");
+        int 배송메세지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송메세지");
 
-        int 옵션명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "옵션 정보");
-        int 상품명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "상품명");
+        int 옵션명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "등록옵션명");
+        int 상품명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "등록상품명");
 
         // copy second ~ last row from order sheet
         for (int rowIndex = HEADER_ROW_INDEX + 1; rowIndex <= orderSheet.getLastRowNum(); rowIndex++) {
@@ -59,12 +59,12 @@ public class AblyPostConverter extends PostConverter {
             옵션명 = 옵션명.replace("&", "");
             상품명 = 상품명.replace("&", "");
 
-            // 옵션정보
-            if (옵션명.contains("/")) {
-                옵션명 = 옵션명.split("/")[0];
+
+            if (상품명.contains(" ")) {
+                상품명 = 상품명.split(" ")[1];
             }
 
-            String 품목 = 옵션명 != "" ? 옵션명 : 상품명;
+            String 품목 = StringUtils.equals(옵션명, "단일상품") ? 상품명 : 옵션명;
             String 배송요청사항 = String.join(" ", 품목, 수량, 배송메세지);
             String 지불방법 = "선불";
 

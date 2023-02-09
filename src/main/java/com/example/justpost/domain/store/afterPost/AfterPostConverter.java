@@ -1,4 +1,4 @@
-package com.example.justpost.domain.afterPost;
+package com.example.justpost.domain.store.afterPost;
 
 import com.example.justpost.domain.Invoice;
 import org.apache.commons.math3.util.Pair;

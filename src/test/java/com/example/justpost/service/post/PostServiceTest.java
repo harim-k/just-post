@@ -1,8 +1,8 @@
 package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
-import com.example.justpost.domain.handler.CuPostHandler;
-import com.example.justpost.domain.handler.GsPostHandler;
+import com.example.justpost.domain.post.CuPostHandler;
+import com.example.justpost.domain.post.GsPostHandler;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.junit.jupiter.api.Test;

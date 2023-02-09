@@ -1,4 +1,4 @@
-package com.example.justpost.domain.post.converter;
+package com.example.justpost.domain.store.post;
 
 import com.example.justpost.domain.ConvertType;
 import lombok.RequiredArgsConstructor;
