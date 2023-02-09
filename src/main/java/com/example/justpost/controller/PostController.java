@@ -2,7 +2,7 @@ package com.example.justpost.controller;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.DownloadType;
-import com.example.justpost.domain.PostInfo;
+import com.example.justpost.domain.Post;
 import com.example.justpost.service.post.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,8 +23,8 @@ public class PostController {
     public String convert(@RequestParam("file") MultipartFile file,
                           @RequestParam("convertType") ConvertType convertType,
                           Model model) {
-        List<PostInfo> postInfos = postService.convertAndSave(file, convertType);
-        model.addAttribute("postInfos", postInfos);
+        List<Post> posts = postService.convertAndSave(file, convertType);
+        model.addAttribute("postInfos", posts);
         return "/index";
     }
 

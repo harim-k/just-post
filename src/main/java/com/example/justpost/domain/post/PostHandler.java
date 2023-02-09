@@ -1,20 +1,17 @@
 package com.example.justpost.domain.post;
 
 import com.example.justpost.domain.Invoice;
-import com.example.justpost.domain.PostInfo;
+import com.example.justpost.domain.Post;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 public abstract class PostHandler {
 
-    public void saveAsPostFile(List<PostInfo> postInfos,
+    public void saveAsPostFile(List<Post> posts,
                                String storeName) throws Exception {
-        Workbook postWorkbook = makePostWorkbook(postInfos);
+        Workbook postWorkbook = makePostWorkbook(posts);
 
         // save
         ExcelUtil.save(postWorkbook, getPostFilePath(storeName));
@@ -25,7 +22,7 @@ public abstract class PostHandler {
 
     public abstract List<Invoice> extractInvoices(String 택배예약현황String);
 
-    abstract Workbook makePostWorkbook(List<PostInfo> postValues) throws Exception;
+    abstract Workbook makePostWorkbook(List<Post> postValues) throws Exception;
 
     public abstract String getPostFilePath(String storeName);
 

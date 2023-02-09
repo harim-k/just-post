@@ -21,14 +21,17 @@ public class ExcelUtil {
         return rows;
     }
 
-    public static String[][] workbookToArray(Workbook workbook, int sheetIndex) {
+    public static String[][] workbookToArray(Workbook workbook,
+                                             int sheetIndex,
+                                             int headerRowIndex) {
         Sheet sheet = workbook.getSheetAt(sheetIndex);
-        return sheetToArray(sheet);
+        return sheetToArray(sheet, headerRowIndex);
     }
 
-    public static String[][] sheetToArray(Sheet sheet) {
+    public static String[][] sheetToArray(Sheet sheet,
+                                          int headerRowIndex) {
         int rowCount = sheet.getPhysicalNumberOfRows();
-        int columnCount = sheet.getRow(0).getPhysicalNumberOfCells();
+        int columnCount = sheet.getRow(headerRowIndex).getPhysicalNumberOfCells();
         String[][] data = new String[rowCount][columnCount];
 
         for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
@@ -139,8 +142,8 @@ public class ExcelUtil {
         Workbook workbook1 = WorkbookFactory.create(new FileInputStream(filePath1));
         Workbook workbook2 = WorkbookFactory.create(new FileInputStream(filePath2));
 
-        String[][] values1 = workbookToArray(workbook1, sheetIndex);
-        String[][] values2 = workbookToArray(workbook2, sheetIndex);
+        String[][] values1 = workbookToArray(workbook1, sheetIndex, 0);
+        String[][] values2 = workbookToArray(workbook2, sheetIndex, 0);
 
         if (values1.length != values2.length) {
             return false;

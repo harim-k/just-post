@@ -1,7 +1,7 @@
 package com.example.justpost.domain.post;
 
 import com.example.justpost.domain.Invoice;
-import com.example.justpost.domain.PostInfo;
+import com.example.justpost.domain.Post;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -23,7 +23,7 @@ public class GsPostHandler extends PostHandler {
     public static final int HEADER_ROW_INDEX = 0;
 
     @Override
-    public void saveAsPostFile(List<PostInfo> postValues,
+    public void saveAsPostFile(List<Post> postValues,
                                String storeName) throws Exception {
         super.saveAsPostFile(postValues, storeName);
     }
@@ -66,7 +66,7 @@ public class GsPostHandler extends PostHandler {
     }
 
     @Override
-    Workbook makePostWorkbook(List<PostInfo> postInfos) throws Exception {
+    Workbook makePostWorkbook(List<Post> posts) throws Exception {
         Workbook postWorkbook = new HSSFWorkbook();
         Workbook postTemplateWorkbook = WorkbookFactory.create(
                 new FileInputStream(getPostTemplateFilePath()));
@@ -78,11 +78,11 @@ public class GsPostHandler extends PostHandler {
         ExcelUtil.copyRow(postTemplateSheet, postSheet, HEADER_ROW_INDEX);
 
         // set second ~ last row from postValues
-        for (int i = 0; i < postInfos.size(); i++) {
-            PostInfo postInfo = postInfos.get(i);
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
 
             ExcelUtil.setRow(postSheet,
-                             convertToForm(postInfo),
+                             convertToForm(post),
                              HEADER_ROW_INDEX + i + 1);
         }
         postTemplateWorkbook.close();
@@ -90,18 +90,18 @@ public class GsPostHandler extends PostHandler {
         return postWorkbook;
     }
 
-    private List<String> convertToForm(PostInfo postInfo) {
+    private List<String> convertToForm(Post post) {
         List<String> rowValues = new ArrayList<>();
 
-        rowValues.add(postInfo.getName());
-        rowValues.add(postInfo.getPostcode());
-        rowValues.add(postInfo.getAddress());
-        rowValues.add(postInfo.getAddress());
-        rowValues.add(postInfo.getContact1());
-        rowValues.add(postInfo.getContact2());
+        rowValues.add(post.getName());
+        rowValues.add(post.getPostcode());
+        rowValues.add(post.getAddress());
+        rowValues.add(post.getAddress());
+        rowValues.add(post.getContact1());
+        rowValues.add(post.getContact2());
         rowValues.add(String.join(" ",
-                                  String.join(" ", postInfo.getProductInfos()),
-                                  postInfo.getMessage()));
+                                  String.join(" ", post.getProductInfos()),
+                                  post.getMessage()));
         rowValues.add("선불");
 
         return rowValues;

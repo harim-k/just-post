@@ -2,7 +2,7 @@ package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.DownloadType;
-import com.example.justpost.domain.PostInfo;
+import com.example.justpost.domain.Post;
 import com.example.justpost.domain.post.*;
 import com.example.justpost.domain.store.post.PostConverter;
 import com.example.justpost.domain.store.post.PostConverterFactory;
@@ -26,22 +26,22 @@ public class PostService {
     private final CuPostHandler cuPostHandler;
 
     @SneakyThrows
-    public List<PostInfo> convertAndSave(MultipartFile file, ConvertType convertType) {
+    public List<Post> convertAndSave(MultipartFile file, ConvertType convertType) {
         PostConverter postConverter = postConverterFactory.get(convertType);
 
         // convert order excel file to post excel file
-        List<PostInfo> postInfos = postConverter.convert(file);
+        List<Post> posts = postConverter.convert(file);
 
         // save as post excel file
-        saveAsPostFile(postInfos, convertType.getStoreName());
+        saveAsPostFile(posts, convertType.getStoreName());
 
-        return postInfos;
+        return posts;
     }
 
-    private void saveAsPostFile(List<PostInfo> postInfos, String storeName) throws Exception {
-        cjPostHandler.saveAsPostFile(postInfos, storeName);
-        gsPostHandler.saveAsPostFile(postInfos, storeName);
-        cuPostHandler.saveAsPostFile(postInfos, storeName);
+    private void saveAsPostFile(List<Post> posts, String storeName) throws Exception {
+        cjPostHandler.saveAsPostFile(posts, storeName);
+        gsPostHandler.saveAsPostFile(posts, storeName);
+        cuPostHandler.saveAsPostFile(posts, storeName);
     }
 
     public void downloadFile(HttpServletResponse response,

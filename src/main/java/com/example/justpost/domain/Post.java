@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class PostInfo {
+public class Post {
     private final String name;
     private final String postcode;
     private final String address;
@@ -18,8 +18,8 @@ public class PostInfo {
     private final String message;
 
 
-    public boolean isSame(PostInfo postInfo) {
-        return StringUtils.equals(this.name, postInfo.name)
-                && StringUtils.equals(this.address, postInfo.address);
+    public boolean isSame(Post post) {
+        return StringUtils.equals(this.name, post.name)
+                && StringUtils.equals(this.address, post.address);
     }
 }

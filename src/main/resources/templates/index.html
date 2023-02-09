@@ -54,18 +54,16 @@
 <p></p>
 
 <hr>
-<span class="tab">&#9;</span>
 
 
-.tab { white-space: pre; }
-<th:block th:each="postInfo : ${postInfos}">
+<th:block th:each="post : ${posts}">
         <tr>
-            <td th:text="${postInfo.getName()} "></td>
-            <td th:text="${postInfo.getPostcode()} "></td>
-            <td th:text="${postInfo.getAddress()} "></td>
-            <td th:text="${postInfo.getContact1()} "></td>
-            <td th:text="${postInfo.getProductInfos()} "></td>
-            <td th:text="${postInfo.getMessage()} "></td>
+            <td th:text="${post.getName()} "></td>
+            <td th:text="${post.getPostcode()} "></td>
+            <td th:text="${post.getAddress()} "></td>
+            <td th:text="${post.getContact1()} "></td>
+            <td th:text="${post.getProductInfos()} "></td>
+            <td th:text="${post.getMessage()} "></td>
         </tr>
     <br>
 </th:block>
