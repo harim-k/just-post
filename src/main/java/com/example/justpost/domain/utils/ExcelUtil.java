@@ -74,8 +74,9 @@ public class ExcelUtil {
             return "";
         } else if (cell.getCellType() == CellType.NUMERIC) {
             return String.valueOf((int) cell.getNumericCellValue());
+        } else {
+            return cell.getStringCellValue();
         }
-        return cell.getStringCellValue();
     }
 
     public static List<String> getValues(Row row) {
@@ -106,11 +107,20 @@ public class ExcelUtil {
         }
     }
 
-    public static void setValues(Sheet sheet, List<List<String>> values, int startRowIndex) {
+    public static void setValues(Sheet sheet,
+                                 List<List<String>> values,
+                                 int startRowIndex) {
         for (int i = 0; i < values.size(); i++) {
             Row row = sheet.createRow(startRowIndex + i);
             setRow(row, values.get(i));
         }
+    }
+
+    public static void setRow(Sheet sheet,
+                              List<String> values,
+                              int rowIndex) {
+        Row row = sheet.createRow(rowIndex);
+        setRow(row, values);
     }
 
     public static void setRow(Row row, List<String> values) {

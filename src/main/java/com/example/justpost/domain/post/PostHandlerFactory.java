@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class PostHandlerFactory {
+    private final CjPostHandler cjPostHandler;
     private final GsPostHandler gsPostHandler;
     private final CuPostHandler cuPostHandler;
 
@@ -20,10 +21,12 @@ public class PostHandlerFactory {
     }
 
     public PostHandler get(DownloadType downloadType) {
-        if (downloadType == DownloadType.CU_POST) {
-            return cuPostHandler;
+        if (downloadType == DownloadType.CJ_POST) {
+            return cjPostHandler;
         } else if (downloadType == DownloadType.GS_POST) {
             return gsPostHandler;
+        } else if (downloadType == DownloadType.CU_POST) {
+            return cuPostHandler;
         } else {
             return null;
         }

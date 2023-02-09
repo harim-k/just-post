@@ -12,13 +12,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class CuPostHandler extends PostHandler {
-    public static final String POST_FILE_NAME = "cu_대량발송.xlsx";
-    public static final String POST_TEMPLATE_FILE_NAME = "cu_대량발송_템플릿.xlsx";
+public class CjPostHandler extends PostHandler {
+    public static final String POST_FILE_NAME = "cj_대량발송.xlsx";
+    public static final String POST_TEMPLATE_FILE_NAME = "cj_대량발송_템플릿.xlsx";
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
 
@@ -28,28 +27,11 @@ public class CuPostHandler extends PostHandler {
         super.saveAsPostFile(postValues, storeName);
     }
 
+
     @Override
     public List<Invoice> extractInvoices(String 택배예약현황String) {
-        List<Invoice> invoices = new ArrayList<>();
-        String[] strings = 택배예약현황String.replace("\r\n", "")
-                .replace("\n", "")
-                .split("이름");
-
-        strings = Arrays.copyOfRange(strings, 2, strings.length);
-
-        for (String string : strings) {
-            String name = string.split("전화번호")[0];
-            String postcode = string.split("\\[")[1]
-                    .split("]")[0];
-            String invoiceNumber = string.split("운송장번호")[1]
-                    .split("배송조회")[0];
-
-            invoices.add(new Invoice(name, postcode, invoiceNumber));
-        }
-
-        return invoices;
+        return null;
     }
-
 
     @Override
     public String getPostFilePath(String storeName) {
@@ -91,16 +73,12 @@ public class CuPostHandler extends PostHandler {
         List<String> rowValues = new ArrayList<>();
 
         rowValues.add(postInfo.getName());
-        rowValues.add(postInfo.getPostcode());
-        rowValues.add(postInfo.getAddress());
         rowValues.add(postInfo.getAddress());
         rowValues.add(postInfo.getContact1());
-        rowValues.add(postInfo.getContact2());
-        rowValues.add(String.join(" ",
-                                  String.join(" ", postInfo.getProductInfos()),
-                                  postInfo.getMessage()));
-        rowValues.add("선불");
+        rowValues.add(String.join(" ", postInfo.getProductInfos()));
+        rowValues.add(String.valueOf(postInfo.getProductInfos().size()));
+        rowValues.add(postInfo.getMessage());
+
         return rowValues;
     }
 }
-

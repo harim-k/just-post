@@ -1,13 +1,15 @@
 package com.example.justpost.domain.store.post;
 
+import com.example.justpost.domain.PostInfo;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class PostConverter {
 
-    public abstract List<List<String>> convert(MultipartFile file) throws Exception;
+    public abstract List<PostInfo> convert(MultipartFile file) throws Exception;
 
     void addToPost(List<List<String>> postValues,
                    List<String> postRowValues,
@@ -17,9 +19,26 @@ public abstract class PostConverter {
 
         if (sameOrderRowIndex != -1) {
             List<String> sameOrderRowValues = postValues.get(sameOrderRowIndex);
-            sameOrderRowValues.set(배송요청사항Index, String.join(" ", 품목, 수량, sameOrderRowValues.get(배송요청사항Index)));
+            sameOrderRowValues.set(
+                    배송요청사항Index,
+                    String.join(" ", 품목, 수량, sameOrderRowValues.get(배송요청사항Index)));
         } else {
             postValues.add(postRowValues);
+        }
+    }
+
+    void addToPostInfo(List<PostInfo> postInfos,
+                       PostInfo postInfo) {
+        Optional<PostInfo> optionalSamePostInfo = postInfos.stream()
+                .filter(_postInfo -> _postInfo.isSame(postInfo))
+                .findFirst();
+
+        if (optionalSamePostInfo.isEmpty()) {
+            postInfos.add(postInfo);
+        } else {
+            optionalSamePostInfo.get()
+                    .getProductInfos()
+                    .addAll(postInfo.getProductInfos());
         }
     }
 

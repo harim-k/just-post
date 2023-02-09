@@ -2,10 +2,8 @@ package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.DownloadType;
-import com.example.justpost.domain.post.CuPostHandler;
-import com.example.justpost.domain.post.GsPostHandler;
-import com.example.justpost.domain.post.PostHandler;
-import com.example.justpost.domain.post.PostHandlerFactory;
+import com.example.justpost.domain.PostInfo;
+import com.example.justpost.domain.post.*;
 import com.example.justpost.domain.store.post.PostConverter;
 import com.example.justpost.domain.store.post.PostConverterFactory;
 import com.example.justpost.domain.utils.FileUtil;
@@ -23,25 +21,27 @@ import java.util.List;
 public class PostService {
     private final PostConverterFactory postConverterFactory;
     private final PostHandlerFactory postHandlerFactory;
+    private final CjPostHandler cjPostHandler;
     private final GsPostHandler gsPostHandler;
     private final CuPostHandler cuPostHandler;
 
     @SneakyThrows
-    public List<List<String>> convertAndSave(MultipartFile file, ConvertType convertType) {
+    public List<PostInfo> convertAndSave(MultipartFile file, ConvertType convertType) {
         PostConverter postConverter = postConverterFactory.get(convertType);
 
         // convert order excel file to post excel file
-        List<List<String>> postValues = postConverter.convert(file);
+        List<PostInfo> postInfos = postConverter.convert(file);
 
         // save as post excel file
-        saveAsPostFile(postValues, convertType.getStoreName());
+        saveAsPostFile(postInfos, convertType.getStoreName());
 
-        return postValues;
+        return postInfos;
     }
 
-    private void saveAsPostFile(List<List<String>> postValues, String storeName) throws IOException {
-        gsPostHandler.saveAsPostFile(postValues, storeName);
-        cuPostHandler.saveAsPostFile(postValues, storeName);
+    private void saveAsPostFile(List<PostInfo> postInfos, String storeName) throws Exception {
+        cjPostHandler.saveAsPostFile(postInfos, storeName);
+        gsPostHandler.saveAsPostFile(postInfos, storeName);
+        cuPostHandler.saveAsPostFile(postInfos, storeName);
     }
 
     public void downloadFile(HttpServletResponse response,

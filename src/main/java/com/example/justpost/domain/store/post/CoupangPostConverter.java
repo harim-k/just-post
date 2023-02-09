@@ -1,5 +1,6 @@
 package com.example.justpost.domain.store.post;
 
+import com.example.justpost.domain.PostInfo;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,67 +20,92 @@ public class CoupangPostConverter extends PostConverter {
     public static final int HEADER_ROW_INDEX = 0;
 
     @Override
-    public List<List<String>> convert(MultipartFile file) throws Exception {
+    public List<PostInfo> convert(MultipartFile file) throws Exception {
         List<List<String>> postValues = new ArrayList<>();
+        List<PostInfo> postInfos = new ArrayList<>();
 
+        //TODO string[][]로 받아서 처리하도록 리팩터링
         Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
         Sheet orderSheet = orderWorkbook.getSheetAt(SHEET_INDEX);
         Row orderHeaderRow = orderSheet.getRow(HEADER_ROW_INDEX);
 
-        int 수취인명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인이름");
-        int 우편번호ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "우편번호");
-        int 기본배송지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인 주소");
+        int nameColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인이름");
+        int postcodeColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "우편번호");
 
-        int 수취인연락처1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인전화번호");
-        int 수취인연락처2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "구매자전화번호");
+        int addressColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인 주소");
 
-        int 수량ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "구매수(수량)");
-        int 배송메세지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송메세지");
+        int contact1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인전화번호");
+        int contact2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "구매자전화번호");
 
-        int 옵션명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "등록옵션명");
-        int 상품명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "등록상품명");
+        int optionColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "등록옵션명");
+        int productColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "등록상품명");
+
+        int countColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "구매수(수량)");
+
+        int messageColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송메세지");
 
         // copy second ~ last row from order sheet
         for (int rowIndex = HEADER_ROW_INDEX + 1; rowIndex <= orderSheet.getLastRowNum(); rowIndex++) {
-            Row orderRow = orderSheet.getRow(rowIndex);
+            final Row orderRow = orderSheet.getRow(rowIndex);
 
-            String 수취인명 = ExcelUtil.getValue(orderRow.getCell(수취인명ColumnIndex));
-            String 우편번호 = ExcelUtil.getValue(orderRow.getCell(우편번호ColumnIndex));
-            String 기본배송지 = ExcelUtil.getValue(orderRow.getCell(기본배송지ColumnIndex));
+            final String name = ExcelUtil.getValue(orderRow.getCell(nameColumnIndex));
+            final String postcode = ExcelUtil.getValue(orderRow.getCell(postcodeColumnIndex));
 
-            String 수취인연락처1 = ExcelUtil.getValue(orderRow.getCell(수취인연락처1ColumnIndex));
-            String 수취인연락처2 = ExcelUtil.getValue(orderRow.getCell(수취인연락처2ColumnIndex));
+            final String address = ExcelUtil.getValue(orderRow.getCell(addressColumnIndex));
 
-            String 수량 = ExcelUtil.getValue(orderRow.getCell(수량ColumnIndex));
-            String 배송메세지 = ExcelUtil.getValue(orderRow.getCell(배송메세지ColumnIndex));
-            String 옵션명 = ExcelUtil.getValue(orderRow.getCell(옵션명ColumnIndex));
-            String 상품명 = ExcelUtil.getValue(orderRow.getCell(상품명ColumnIndex));
+            final String contact1 = ExcelUtil.getValue(orderRow.getCell(contact1ColumnIndex));
+            final String contact2 = ExcelUtil.getValue(orderRow.getCell(contact2ColumnIndex));
 
-            // 특수문자 제거
-            옵션명 = 옵션명.replace("&", "");
-            상품명 = 상품명.replace("&", "");
+            final String product = ExcelUtil.getValue(orderRow.getCell(productColumnIndex));
+            final String option = ExcelUtil.getValue(orderRow.getCell(optionColumnIndex));
 
+            final String count = ExcelUtil.getValue(orderRow.getCell(countColumnIndex));
 
-            if (상품명.contains(" ")) {
-                상품명 = 상품명.split(" ")[1];
-            }
+            final String message = ExcelUtil.getValue(orderRow.getCell(messageColumnIndex));
+            final String cost = "선불";
 
-            String 품목 = StringUtils.equals(옵션명, "단일상품") ? 상품명 : 옵션명;
-            String 배송요청사항 = String.join(" ", 품목, 수량, 배송메세지);
-            String 지불방법 = "선불";
+            final String productInfo = getProductInfo(product, option, count);
+
 
             List<String> postRowValues = new ArrayList<>(
-                    Arrays.asList(수취인명, 우편번호, 기본배송지, 기본배송지,
-                                  수취인연락처1, 수취인연락처2, 배송요청사항, 지불방법));
+                    Arrays.asList(name, postcode, address, address,
+                                  contact1, contact2, message, cost));
 
+            PostInfo postInfo = PostInfo.builder()
+                    .name(name)
+                    .postcode(postcode)
+                    .address(address)
+                    .contact1(contact1)
+                    .contact2(contact2)
+                    .productInfos(new ArrayList<>(List.of(productInfo)))
+                    .message(message)
+                    .build();
 
             // 같은 주소인 경우 하나로 합치기
-            addToPost(postValues, postRowValues, 수량, 품목);
+            addToPost(postValues, postRowValues, count, product);
+            addToPostInfo(postInfos, postInfo);
         }
 
         // close workbook
         orderWorkbook.close();
 
-        return postValues;
+        return postInfos;
+    }
+
+    private String getProductInfo(String product,
+                                  String option,
+                                  String count) {
+        // 특수문자 제거
+        option = option.replace("&", "");
+        product = product.replace("&", "");
+
+
+        if (product.contains(" ")) {
+            product = product.split(" ")[1];
+        }
+
+        return String.join(" ",
+                           StringUtils.equals(option, "단일상품") ? product : option,
+                           count);
     }
 }

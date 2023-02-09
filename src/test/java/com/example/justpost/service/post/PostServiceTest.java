@@ -1,6 +1,7 @@
 package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
+import com.example.justpost.domain.post.CjPostHandler;
 import com.example.justpost.domain.post.CuPostHandler;
 import com.example.justpost.domain.post.GsPostHandler;
 import com.example.justpost.domain.utils.ExcelUtil;
@@ -50,6 +51,9 @@ class PostServiceTest {
         final String orderFileName = storeName + "_주문.xlsx";
         final String orderFilePath = TEST_ORDER_FILE_PATH + orderFileName;
 
+        final String actualCjPostFilePath = FileUtil.POST_FILE_PATH + storeName + "_" + CjPostHandler.POST_FILE_NAME;
+        final String expectedCjPostFilePath = TEST_POST_FILE_PATH + storeName + "_" + CjPostHandler.POST_FILE_NAME;
+
         final String actualGsPostFilePath = FileUtil.POST_FILE_PATH + storeName + "_" + GsPostHandler.POST_FILE_NAME;
         final String expectedGsPostFilePath = TEST_POST_FILE_PATH + storeName + "_" + GsPostHandler.POST_FILE_NAME;
 
@@ -62,6 +66,7 @@ class PostServiceTest {
 
         postService.convertAndSave(mockMultipartFile, convertType);
 
+        assertThat(ExcelUtil.compare(actualCjPostFilePath, expectedCjPostFilePath, sheetIndex)).isTrue();
         assertThat(ExcelUtil.compare(actualGsPostFilePath, expectedGsPostFilePath, sheetIndex)).isTrue();
         assertThat(ExcelUtil.compare(actualCuPostFilePath, expectedCuPostFilePath, sheetIndex)).isTrue();
     }

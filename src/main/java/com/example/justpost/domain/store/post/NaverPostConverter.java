@@ -1,5 +1,6 @@
 package com.example.justpost.domain.store.post;
 
+import com.example.justpost.domain.PostInfo;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.poifs.crypt.Decryptor;
 import org.apache.poi.poifs.crypt.EncryptionInfo;
@@ -21,78 +22,100 @@ public class NaverPostConverter extends PostConverter {
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 1;
 
+    private static String getProductInfo(String product,
+                                         String option,
+                                         String count) {
+        // 특수문자 제거
+        option = option.replace("&", "");
+        product = product.replace("&", "");
+
+        // 단품 제거
+        option = option.replace("단품", "");
+        product = product.replace("단품", "");
+
+        // 옵션명 제거
+        if (option.contains(": ")) {
+            option = option.split(": ")[1];
+        }
+
+        return String.join(" ",
+                           option != "" ? option : product,
+                           count);
+    }
+
     @Override
-    public List<List<String>> convert(MultipartFile file) throws Exception {
+    public List<PostInfo> convert(MultipartFile file) throws Exception {
         List<List<String>> postValues = new ArrayList<>();
+        List<PostInfo> postInfos = new ArrayList<>();
 
         Workbook orderWorkbook = decryptExcelFile(file);
         Sheet orderSheet = orderWorkbook.getSheetAt(SHEET_INDEX);
         Row orderHeaderRow = orderSheet.getRow(HEADER_ROW_INDEX);
 
-        int 수취인명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인명");
-        int 우편번호ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "우편번호");
+        int nameColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인명");
+        int postcodeColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "우편번호");
 
-        int 기본배송지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "기본배송지");
-        int 상세배송지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "상세배송지");
+        int address1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "기본배송지");
+        int address2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "상세배송지");
 
-        int 수취인연락처1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인연락처1");
-        int 수취인연락처2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인연락처2");
-        int 수량ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수량");
+        int contact1ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인연락처1");
+        int contact2ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수취인연락처2");
 
-        int 배송메세지ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송메세지");
-        int 옵션명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "옵션정보");
-        int 상품명ColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "상품명");
+        int optionColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "옵션정보");
+        int productColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "상품명");
+
+        int countColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "수량");
+
+        int messageColumnIndex = ExcelUtil.getColumnIndex(orderHeaderRow, "배송메세지");
 
         // copy second ~ last row from order sheet
         for (int rowIndex = HEADER_ROW_INDEX + 1; rowIndex <= orderSheet.getLastRowNum(); rowIndex++) {
-            Row orderRow = orderSheet.getRow(rowIndex);
+            final Row orderRow = orderSheet.getRow(rowIndex);
 
-            String 수취인명 = ExcelUtil.getValue(orderRow.getCell(수취인명ColumnIndex));
-            String 우편번호 = ExcelUtil.getValue(orderRow.getCell(우편번호ColumnIndex));
+            final String name = ExcelUtil.getValue(orderRow.getCell(nameColumnIndex));
+            final String postcode = ExcelUtil.getValue(orderRow.getCell(postcodeColumnIndex));
 
-            String 기본배송지 = ExcelUtil.getValue(orderRow.getCell(기본배송지ColumnIndex));
-            String 상세배송지 = ExcelUtil.getValue(orderRow.getCell(상세배송지ColumnIndex));
+            final String address1 = ExcelUtil.getValue(orderRow.getCell(address1ColumnIndex));
+            final String address2 = ExcelUtil.getValue(orderRow.getCell(address2ColumnIndex));
 
-            String 수취인연락처1 = ExcelUtil.getValue(orderRow.getCell(수취인연락처1ColumnIndex));
-            String 수취인연락처2 = ExcelUtil.getValue(orderRow.getCell(수취인연락처2ColumnIndex));
+            final String contact1 = ExcelUtil.getValue(orderRow.getCell(contact1ColumnIndex));
+            final String contact2 = ExcelUtil.getValue(orderRow.getCell(contact2ColumnIndex));
 
-            String 수량 = ExcelUtil.getValue(orderRow.getCell(수량ColumnIndex));
-            String 배송메세지 = ExcelUtil.getValue(orderRow.getCell(배송메세지ColumnIndex));
-            String 옵션명 = ExcelUtil.getValue(orderRow.getCell(옵션명ColumnIndex));
-            String 상품명 = ExcelUtil.getValue(orderRow.getCell(상품명ColumnIndex));
+            final String product = ExcelUtil.getValue(orderRow.getCell(productColumnIndex));
+            final String option = ExcelUtil.getValue(orderRow.getCell(optionColumnIndex));
 
-            // 특수문자 제거
-            옵션명 = 옵션명.replace("&", "");
-            상품명 = 상품명.replace("&", "");
+            final String count = ExcelUtil.getValue(orderRow.getCell(countColumnIndex));
 
-            // 단품 제거
-            옵션명 = 옵션명.replace("단품", "");
-            상품명 = 상품명.replace("단품", "");
+            final String message = ExcelUtil.getValue(orderRow.getCell(messageColumnIndex));
+            final String cost = "선불";
 
-            // 옵션명 제거
-            if (옵션명.contains(": ")) {
-                옵션명 = 옵션명.split(": ")[1];
-            }
+            final String productInfo = getProductInfo(product, option, count);
 
-            String 품목 = 옵션명 != "" ? 옵션명 : 상품명;
-            String 배송요청사항 = String.join(" ", 품목, 수량, 배송메세지);
-            String 지불방법 = "선불";
 
-            List<String> postRowValues = new ArrayList<>(
-                    Arrays.asList(수취인명, 우편번호, 기본배송지, 상세배송지,
-                                  수취인연락처1, 수취인연락처2, 배송요청사항, 지불방법));
+            final List<String> postRowValues = new ArrayList<>(
+                    Arrays.asList(name, postcode, address1, address2,
+                                  contact1, contact2, message, cost));
 
+            final PostInfo postInfo = PostInfo.builder()
+                    .name(name)
+                    .postcode(postcode)
+                    .address(String.join(" ", address1, address2))
+                    .contact1(contact1)
+                    .contact2(contact2)
+                    .productInfos(new ArrayList<>(List.of(productInfo)))
+                    .message(message)
+                    .build();
 
             // 같은 주소인 경우 하나로 합치기
-            addToPost(postValues, postRowValues, 수량, 품목);
+            addToPost(postValues, postRowValues, count, product);
+            addToPostInfo(postInfos, postInfo);
         }
 
         // close workbook
         orderWorkbook.close();
 
-        return postValues;
+        return postInfos;
     }
-
 
     private Workbook decryptExcelFile(MultipartFile file) throws Exception {
         POIFSFileSystem fs = new POIFSFileSystem(file.getInputStream());

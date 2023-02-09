@@ -35,7 +35,9 @@
     <input name="convertType" type="radio" value="ABLY_POST">에이블리
 
     <p></p>
-
+    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+           th:formaction="@{/post/download/CJ_POST}" type="submit"
+           value="cj 대량발송 엑셀 파일 다운로드">
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
            th:formaction="@{/post/download/GS_POST}" type="submit"
            value="gs 대량발송 엑셀 파일 다운로드">
@@ -52,13 +54,19 @@
 <p></p>
 
 <hr>
+<span class="tab">&#9;</span>
 
-<th:block th:each="postExcelRow : ${postExcelData}">
-    <th:block th:each="postExcelCell : ${postExcelRow}">
+
+.tab { white-space: pre; }
+<th:block th:each="postInfo : ${postInfos}">
         <tr>
-            <td th:text="${postExcelCell} "></td>
+            <td th:text="${postInfo.getName()} "></td>
+            <td th:text="${postInfo.getPostcode()} "></td>
+            <td th:text="${postInfo.getAddress()} "></td>
+            <td th:text="${postInfo.getContact1()} "></td>
+            <td th:text="${postInfo.getProductInfos()} "></td>
+            <td th:text="${postInfo.getMessage()} "></td>
         </tr>
-    </th:block>
     <br>
 </th:block>
 
