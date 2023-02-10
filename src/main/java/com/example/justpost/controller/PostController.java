@@ -24,7 +24,7 @@ public class PostController {
                           @RequestParam("convertType") ConvertType convertType,
                           Model model) {
         List<Post> posts = postService.convertAndSave(file, convertType);
-        model.addAttribute("postInfos", posts);
+        model.addAttribute("posts", posts);
         return "/index";
     }
 

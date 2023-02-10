@@ -27,6 +27,7 @@ public class NaverAfterPostConverter extends AfterPostConverter {
     public static final int HEADER_ROW_INDEX = 1;
     public static final String AFTER_POST_FILE_NAME = "네이버_발송처리.xls";
     public static final String AFTER_POST_TEMPLATE_FILE_NAME = "네이버_발송처리_템플릿.xlsx";
+    public static final String SHEET_NAME = "발송처리";
 
 
     @Override
@@ -91,7 +92,7 @@ public class NaverAfterPostConverter extends AfterPostConverter {
         // xlsx 파일은 XSSFWorkbook로, xls 파일은 HSSFWorkbook로 다뤄야함
         // 그래서 WorkbookFactory 사용
 
-        Sheet postSheet = postWorkbook.createSheet();
+        Sheet postSheet = postWorkbook.createSheet(SHEET_NAME);
         Sheet postTemplateSheet = postTemplateWorkbook.getSheetAt(0);
 
         // copy first row from post template

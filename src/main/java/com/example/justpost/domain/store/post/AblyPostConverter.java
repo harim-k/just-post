@@ -3,6 +3,8 @@ package com.example.justpost.domain.store.post;
 import com.example.justpost.domain.OrderIndexInfo;
 import org.springframework.stereotype.Component;
 
+import static com.example.justpost.domain.utils.StringUtil.getIndex;
+
 @Component
 public class AblyPostConverter extends PostConverter {
     public static final int SHEET_INDEX = 1;

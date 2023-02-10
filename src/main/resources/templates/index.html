@@ -7,15 +7,17 @@
 </head>
 
 <body style="margin-top: 30px;margin-left: 30px;">
-<p>택배 예약</p>
+<h1>택배 예약</h1>
+<hr>
 
 <form enctype="multipart/form-data" method="post">
+    (스토어 주문 파일)
     <input name="file" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
            type="file">
 
     <p></p>
-
+    (스토어)
     <input checked name="convertType" type="radio" value="NAVER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_POST">에이블리
@@ -27,9 +29,11 @@
 </form>
 
 <p></p>
+<hr>
 
 
 <form enctype="multipart/form-data" method="get">
+    (스토어)
     <input checked name="convertType" type="radio" value="NAVER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_POST">에이블리
@@ -75,23 +79,32 @@
 <p></p>
 <p></p>
 
-<p>발송 처리</p>
+<h1>발송 처리</h1>
+<hr>
 
 <form enctype="multipart/form-data" method="post">
-    <input name="file" required="required" style="border: 1px solid black; padding: 5px;"
+    (스토어 주문 파일)
+    <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
            type="file">
-
     <p></p>
 
+    (스토어)
     <input checked name="convertType" type="radio" value="NAVER_AFTER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_AFTER_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_AFTER_POST">에이블리
-
     <p></p>
 
-    <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="10"></textarea>
+    (cj 택배 접수 파일)
+    <input name="postFile" style="border: 1px solid black; padding: 5px;"
+           title="Upload excel file"
+           type="file">
     <p></p>
+
+    <p>
+    (gs/cu 택배 예약 내역)
+    <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="1"></textarea>
+    </p>
 
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
            th:formaction="@{/afterPost/convert}" type="submit"
@@ -99,8 +112,10 @@
 </form>
 
 <p></p>
+<hr>
 
 <form enctype="multipart/form-data" method="get">
+    (스토어)
     <input checked name="convertType" type="radio" value="NAVER_AFTER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_AFTER_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_AFTER_POST">에이블리
@@ -130,7 +145,8 @@
 <hr>
 
 
-<p>엑셀 파일 합치기</p>
+<h1>엑셀 파일 합치기</h1>
+<hr>
 
 <form enctype="multipart/form-data" method="get">
     <input multiple name="excel_file" required="required" style="border: 1px solid black; padding: 5px;"

@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class FileUtil {
 
     public static final String POST_FILE_PATH = "src/main/resources/post/";

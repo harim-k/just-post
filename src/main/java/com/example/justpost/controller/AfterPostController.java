@@ -20,11 +20,13 @@ public class AfterPostController {
     public final AfterPostService afterPostService;
 
     @PostMapping("/convert")
-    public String convert(@RequestParam("file") MultipartFile file,
+    public String convert(@RequestParam("orderFile") MultipartFile orderFile,
                           @RequestParam("convertType") ConvertType convertType,
-                          @RequestParam("afterPostString") String afterPostString,
+                          @RequestParam(value = "postFile", required = false) MultipartFile postFile,
+                          @RequestParam(value = "afterPostString", required = false) String afterPostString,
                           Model model) {
-        List<List<String>> afterPostValues = afterPostService.convertAndSave(file, afterPostString, convertType);
+        List<List<String>> afterPostValues = afterPostService.convertAndSave(
+                orderFile, convertType, postFile, afterPostString);
         model.addAttribute("afterPostExcelData", afterPostValues);
         return "/index";
     }

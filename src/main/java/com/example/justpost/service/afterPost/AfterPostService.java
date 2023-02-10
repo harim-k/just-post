@@ -2,6 +2,7 @@ package com.example.justpost.service.afterPost;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.Invoice;
+import com.example.justpost.domain.post.PostHandler;
 import com.example.justpost.domain.store.afterPost.AfterPostConverter;
 import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
 import com.example.justpost.domain.post.PostHandlerFactory;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,16 +25,22 @@ public class AfterPostService {
     private final PostHandlerFactory postHandlerFactory;
 
     @SneakyThrows
-    public List<List<String>> convertAndSave(MultipartFile file,
-                                             String afterPostString,
-                                             ConvertType convertType) {
+    public List<List<String>> convertAndSave(MultipartFile orderFile,
+                                             ConvertType convertType,
+                                             MultipartFile postFile,
+                                             String afterPostString) {
+
         AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
-
+        PostHandler postHandler = postHandlerFactory.get(afterPostString);
+        List<Invoice> invoices;
         // extract after post infos
-        List<Invoice> invoices = postHandlerFactory.get(afterPostString).extractInvoices(afterPostString);
-
+        if (StringUtils.equals(afterPostString, "")) {
+            invoices = postHandler.extractInvoices(postFile);
+        } else {
+            invoices = postHandler.extractInvoices(afterPostString);
+        }
         // convert order excel file to after post excel file
-        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(file, invoices);
+        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoices);
 
         return afterPostValues;
     }

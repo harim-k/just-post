@@ -3,6 +3,7 @@ package com.example.justpost.domain.post;
 import com.example.justpost.domain.DownloadType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -13,7 +14,9 @@ public class PostHandlerFactory {
 
 
     public PostHandler get(String afterPostString) {
-        if (afterPostString.contains("CUPOST")) {
+        if (StringUtils.equals(afterPostString, "")) {
+            return cjPostHandler;
+        } else if (afterPostString.contains("CUPOST")) {
             return cuPostHandler;
         } else {
             return gsPostHandler;

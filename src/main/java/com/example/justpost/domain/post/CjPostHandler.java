@@ -1,7 +1,6 @@
 package com.example.justpost.domain.post;
 
-import com.example.justpost.domain.Invoice;
-import com.example.justpost.domain.Post;
+import com.example.justpost.domain.*;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -9,10 +8,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.justpost.domain.utils.StringUtil.getIndex;
 
 @Component
 public class CjPostHandler extends PostHandler {
@@ -31,6 +34,34 @@ public class CjPostHandler extends PostHandler {
     @Override
     public List<Invoice> extractInvoices(String 택배예약현황String) {
         return null;
+    }
+
+    @Override
+    public List<Invoice> extractInvoices(MultipartFile postFile) throws Exception {
+        List<Invoice> invoices = new ArrayList<>();
+
+        Workbook postWorkbook = WorkbookFactory.create(postFile.getInputStream());
+
+        String[][] postSheet = ExcelUtil.workbookToArray(postWorkbook, SHEET_INDEX, HEADER_ROW_INDEX);
+
+        InvoiceIndexInfo invoiceIndexInfo = getInvoiceIndexInfo(postSheet);
+
+        for (int rowIndex = HEADER_ROW_INDEX + 1; rowIndex < postSheet.length; rowIndex++) {
+            String[] postRow = postSheet[rowIndex];
+
+            Invoice invoice = makeInvoice(postRow, invoiceIndexInfo);
+            invoices.add(invoice);
+        }
+
+        return invoices;
+    }
+
+    private Invoice makeInvoice(String[] postRow, InvoiceIndexInfo invoiceIndexInfo) {
+        return Invoice.builder()
+                .name(postRow[invoiceIndexInfo.getNameColumnIndex()])
+                .postcode(postRow[invoiceIndexInfo.getPostcodeColumnIndex()])
+                .invoiceNumber(StringUtils.replace(postRow[invoiceIndexInfo.getInvoiceNumberColumnIndex()], "-", ""))
+                .build();
     }
 
     @Override
@@ -80,5 +111,16 @@ public class CjPostHandler extends PostHandler {
         rowValues.add(post.getMessage());
 
         return rowValues;
+    }
+
+    InvoiceIndexInfo getInvoiceIndexInfo(String[][] postSheet) {
+        String[] headerRow = postSheet[HEADER_ROW_INDEX];
+
+        return InvoiceIndexInfo.builder()
+                .nameColumnIndex(getIndex(headerRow, "받는분"))
+                .postcodeColumnIndex(getIndex(headerRow, "받는분  우편번호"))
+                .addressColumnIndex(getIndex(headerRow, "받는분주소"))
+                .invoiceNumberColumnIndex(getIndex(headerRow, "운송장번호"))
+                .build();
     }
 }

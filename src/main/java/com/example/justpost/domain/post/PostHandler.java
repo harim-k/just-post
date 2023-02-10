@@ -4,6 +4,7 @@ import com.example.justpost.domain.Invoice;
 import com.example.justpost.domain.Post;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public abstract class PostHandler {
     }
 
     public abstract List<Invoice> extractInvoices(String 택배예약현황String);
+    public abstract List<Invoice> extractInvoices(MultipartFile postFile) throws Exception;
 
     abstract Workbook makePostWorkbook(List<Post> postValues) throws Exception;
 

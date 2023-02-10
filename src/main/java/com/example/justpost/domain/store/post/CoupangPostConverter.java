@@ -4,6 +4,8 @@ import com.example.justpost.domain.OrderIndexInfo;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
+import static com.example.justpost.domain.utils.StringUtil.getIndex;
+
 @Component
 public class CoupangPostConverter extends PostConverter {
     public static final int SHEET_INDEX = 0;

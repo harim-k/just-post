@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -50,6 +51,10 @@ public class CuPostHandler extends PostHandler {
         return invoices;
     }
 
+    @Override
+    public List<Invoice> extractInvoices(MultipartFile postFile) {
+        return null;
+    }
 
     @Override
     public String getPostFilePath(String storeName) {

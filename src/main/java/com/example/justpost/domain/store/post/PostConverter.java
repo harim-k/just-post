@@ -71,18 +71,6 @@ public abstract class PostConverter {
         return posts;
     }
 
-
-    int getIndex(String[] orderHeaderRow,
-                 String string) {
-        for (int i = 0; i < orderHeaderRow.length; i++) {
-            if (StringUtils.equals(orderHeaderRow[i], string)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
     Order makeOrder(String[] orderRow, OrderIndexInfo orderIndexInfo) {
         return Order.builder()
                 .name(orderRow[orderIndexInfo.getNameColumnIndex()])
