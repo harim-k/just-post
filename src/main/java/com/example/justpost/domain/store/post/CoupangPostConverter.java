@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.post;
 
-import com.example.justpost.domain.OrderIndexInfo;
+import com.example.justpost.domain.OrderColumnIndex;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
@@ -21,9 +21,9 @@ public class CoupangPostConverter extends PostConverter {
     }
 
 
-    String getProductInfo(String product,
-                          String option,
-                          String count) {
+    String getProduct(String product,
+                      String option,
+                      String count) {
         // 특수문자 제거
         option = option.replace("&", "");
         product = product.replace("&", "");
@@ -38,10 +38,10 @@ public class CoupangPostConverter extends PostConverter {
                            count);
     }
 
-    OrderIndexInfo getOrderIndexInfo(String[][] orderSheet) {
+    OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
         String[] orderHeaderRow = orderSheet[HEADER_ROW_INDEX];
 
-        return OrderIndexInfo.builder()
+        return OrderColumnIndex.builder()
                 .nameColumnIndex(getIndex(orderHeaderRow, "수취인이름"))
                 .postcodeColumnIndex(getIndex(orderHeaderRow, "우편번호"))
                 .addressColumnIndex(getIndex(orderHeaderRow, "수취인 주소"))

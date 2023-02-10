@@ -1,11 +1,11 @@
 package com.example.justpost.service.afterPost;
 
 import com.example.justpost.domain.ConvertType;
-import com.example.justpost.domain.Invoice;
+import com.example.justpost.domain.InvoiceNumberMap;
 import com.example.justpost.domain.post.PostHandler;
+import com.example.justpost.domain.post.PostHandlerFactory;
 import com.example.justpost.domain.store.afterPost.AfterPostConverter;
 import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
-import com.example.justpost.domain.post.PostHandlerFactory;
 import com.example.justpost.domain.utils.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,19 +28,19 @@ public class AfterPostService {
     public List<List<String>> convertAndSave(MultipartFile orderFile,
                                              ConvertType convertType,
                                              MultipartFile postFile,
-                                             String afterPostString) {
+                                             String postString) {
 
         AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
-        PostHandler postHandler = postHandlerFactory.get(afterPostString);
-        List<Invoice> invoices;
-        // extract after post infos
-        if (StringUtils.equals(afterPostString, "")) {
-            invoices = postHandler.extractInvoices(postFile);
+        PostHandler postHandler = postHandlerFactory.get(postString);
+        InvoiceNumberMap invoiceNumberMap;
+        if (StringUtils.equals(postString, "")) {
+            invoiceNumberMap = postHandler.getInvoiceNumberMap(postFile);
         } else {
-            invoices = postHandler.extractInvoices(afterPostString);
+            invoiceNumberMap = postHandler.getInvoiceNumberMap(postString);
         }
-        // convert order excel file to after post excel file
-        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoices);
+
+        //TODO postMap을 넘기도록 리팩터링
+        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoiceNumberMap);
 
         return afterPostValues;
     }

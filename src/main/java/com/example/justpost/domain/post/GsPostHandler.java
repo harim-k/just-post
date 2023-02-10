@@ -1,7 +1,7 @@
 package com.example.justpost.domain.post;
 
-import com.example.justpost.domain.Invoice;
-import com.example.justpost.domain.Post;
+import com.example.justpost.domain.InvoiceNumberMap;
+import com.example.justpost.domain.PostReservation;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -23,18 +23,12 @@ public class GsPostHandler extends PostHandler {
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
 
-    @Override
-    public void saveAsPostFile(List<Post> postValues,
-                               String storeName) throws Exception {
-        super.saveAsPostFile(postValues, storeName);
-    }
-
 
     @Override
-    public List<Invoice> extractInvoices(String 택배예약현황String) {
-        List<Invoice> invoices = new ArrayList<>();
+    public InvoiceNumberMap getInvoiceNumberMap(String postString) {
+        InvoiceNumberMap invoiceNumberMap = new InvoiceNumberMap();
 
-        String[] strings = 택배예약현황String.replace("\r\n", "")
+        String[] strings = postString.replace("\r\n", "")
                 .replace("\n", "")
                 .split("수신정보")[1]
                 .split("선불");
@@ -50,14 +44,14 @@ public class GsPostHandler extends PostHandler {
             String invoiceNumber = string.split("운송장번호")[1]
                     .split("Comment")[0];
 
-            invoices.add(new Invoice(name, postcode, invoiceNumber));
+            invoiceNumberMap.put(name, postcode, invoiceNumber);
         }
 
-        return invoices;
+        return invoiceNumberMap;
     }
 
     @Override
-    public List<Invoice> extractInvoices(MultipartFile postFile) {
+    public InvoiceNumberMap getInvoiceNumberMap(MultipartFile postFile) {
         return null;
     }
 
@@ -73,7 +67,7 @@ public class GsPostHandler extends PostHandler {
     }
 
     @Override
-    Workbook makePostWorkbook(List<Post> posts) throws Exception {
+    Workbook convertToWorkbook(List<PostReservation> postReservations) throws Exception {
         Workbook postWorkbook = new HSSFWorkbook();
         Workbook postTemplateWorkbook = WorkbookFactory.create(
                 new FileInputStream(getPostTemplateFilePath()));
@@ -85,11 +79,11 @@ public class GsPostHandler extends PostHandler {
         ExcelUtil.copyRow(postTemplateSheet, postSheet, HEADER_ROW_INDEX);
 
         // set second ~ last row from postValues
-        for (int i = 0; i < posts.size(); i++) {
-            Post post = posts.get(i);
+        for (int i = 0; i < postReservations.size(); i++) {
+            PostReservation postReservation = postReservations.get(i);
 
             ExcelUtil.setRow(postSheet,
-                             convertToForm(post),
+                             convertToForm(postReservation),
                              HEADER_ROW_INDEX + i + 1);
         }
         postTemplateWorkbook.close();
@@ -97,18 +91,18 @@ public class GsPostHandler extends PostHandler {
         return postWorkbook;
     }
 
-    private List<String> convertToForm(Post post) {
+    private List<String> convertToForm(PostReservation postReservation) {
         List<String> rowValues = new ArrayList<>();
 
-        rowValues.add(post.getName());
-        rowValues.add(post.getPostcode());
-        rowValues.add(post.getAddress());
-        rowValues.add(post.getAddress());
-        rowValues.add(post.getContact1());
-        rowValues.add(post.getContact2());
+        rowValues.add(postReservation.getName());
+        rowValues.add(postReservation.getPostcode());
+        rowValues.add(postReservation.getAddress());
+        rowValues.add(postReservation.getAddress());
+        rowValues.add(postReservation.getContact1());
+        rowValues.add(postReservation.getContact2());
         rowValues.add(String.join(" ",
-                                  String.join(" ", post.getProductInfos()),
-                                  post.getMessage()));
+                                  String.join(" ", postReservation.getProducts()),
+                                  postReservation.getMessage()));
         rowValues.add("선불");
 
         return rowValues;

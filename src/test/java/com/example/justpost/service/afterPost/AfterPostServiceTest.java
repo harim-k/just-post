@@ -113,7 +113,7 @@ class AfterPostServiceTest {
 
         afterPostService.convertAndSave(
                 orderFile, convertType,
-                postFile, null);
+                postFile, "");
 
         assertThat(ExcelUtil.compare(actualAfterPostFilePath, expectedAfterPostFilePath, sheetIndex)).isTrue();
     }

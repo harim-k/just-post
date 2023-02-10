@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class OrderIndexInfo {
+public class OrderColumnIndex {
     private final int nameColumnIndex;
     private final int postcodeColumnIndex;
     private final int addressColumnIndex;

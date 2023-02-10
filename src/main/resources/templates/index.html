@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>just post</title>
+    <title>just postReservation</title>
     <meta content="f8c5c5b9b4901ef43322866f04db422ab521f552" name="naver-site-verification"/>
 </head>
 
@@ -10,9 +10,9 @@
 <h1>택배 예약</h1>
 <hr>
 
-<form enctype="multipart/form-data" method="post">
+<form enctype="multipart/form-data" method="postReservation">
     (스토어 주문 파일)
-    <input name="file" required="required" style="border: 1px solid black; padding: 5px;"
+    <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
            type="file">
 
@@ -24,7 +24,7 @@
     <p></p>
 
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/post/convert}" type="submit"
+           th:formaction="@{/postReservation/convert}" type="submit"
            value="엑셀 파일 변환">
 </form>
 
@@ -40,13 +40,13 @@
 
     <p></p>
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/post/download/CJ_POST}" type="submit"
+           th:formaction="@{/postReservation/download/CJ_POST}" type="submit"
            value="cj 대량발송 엑셀 파일 다운로드">
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/post/download/GS_POST}" type="submit"
+           th:formaction="@{/postReservation/download/GS_POST}" type="submit"
            value="gs 대량발송 엑셀 파일 다운로드">
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/post/download/CU_POST}" type="submit"
+           th:formaction="@{/postReservation/download/CU_POST}" type="submit"
            value="cu 대량발송 엑셀 파일 다운로드">
 </form>
 
@@ -54,21 +54,20 @@
 <p></p>
 
 
-
 <p></p>
 
 <hr>
 
 
-<th:block th:each="post : ${posts}">
-        <tr>
-            <td th:text="${post.getName()} "></td>
-            <td th:text="${post.getPostcode()} "></td>
-            <td th:text="${post.getAddress()} "></td>
-            <td th:text="${post.getContact1()} "></td>
-            <td th:text="${post.getProductInfos()} "></td>
-            <td th:text="${post.getMessage()} "></td>
-        </tr>
+<th:block th:each="postReservation : ${postReservations}">
+    <tr>
+        <td th:text="${postReservation.getName()} "></td>
+        <td th:text="${postReservation.getPostcode()} "></td>
+        <td th:text="${postReservation.getAddress()} "></td>
+        <td th:text="${postReservation.getContact1()} "></td>
+        <td th:text="${postReservation.getProducts()} "></td>
+        <td th:text="${postReservation.getMessage()} "></td>
+    </tr>
     <br>
 </th:block>
 
@@ -82,7 +81,7 @@
 <h1>발송 처리</h1>
 <hr>
 
-<form enctype="multipart/form-data" method="post">
+<form enctype="multipart/form-data" method="postReservation">
     (스토어 주문 파일)
     <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
@@ -102,8 +101,8 @@
     <p></p>
 
     <p>
-    (gs/cu 택배 예약 내역)
-    <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="1"></textarea>
+        (gs/cu 택배 예약 내역)
+        <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="1"></textarea>
     </p>
 
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
@@ -139,6 +138,7 @@
     </th:block>
     <br>
 </th:block>
+
 
 <p></p>
 

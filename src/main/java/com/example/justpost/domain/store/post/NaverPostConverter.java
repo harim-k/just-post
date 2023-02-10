@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.post;
 
-import com.example.justpost.domain.OrderIndexInfo;
+import com.example.justpost.domain.OrderColumnIndex;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.poifs.crypt.Decryptor;
 import org.apache.poi.poifs.crypt.EncryptionInfo;
@@ -27,21 +27,8 @@ public class NaverPostConverter extends PostConverter {
     }
 
 
-    private Workbook decryptExcelFile(MultipartFile file) throws Exception {
-        POIFSFileSystem fs = new POIFSFileSystem(file.getInputStream());
-        EncryptionInfo info = new EncryptionInfo(fs);
-        Decryptor decryptor = Decryptor.getInstance(info);
-
-        if (!decryptor.verifyPassword("1111")) {
-            throw new Exception("Incorrect password");
-        }
-
-        return WorkbookFactory.create(decryptor.getDataStream(fs));
-    }
-
-
-    String[][] getOrderSheet(MultipartFile file) throws Exception {
-        Workbook orderWorkbook = decryptExcelFile(file);
+    String[][] getOrderSheet(MultipartFile orderFile) throws Exception {
+        Workbook orderWorkbook = decryptExcelFile(orderFile);
         String[][] orderSheet = ExcelUtil.workbookToArray(
                 orderWorkbook,
                 SHEET_INDEX,
@@ -52,9 +39,9 @@ public class NaverPostConverter extends PostConverter {
         return orderSheet;
     }
 
-    String getProductInfo(String product,
-                          String option,
-                          String count) {
+    String getProduct(String product,
+                      String option,
+                      String count) {
         // 특수문자 제거
         option = option.replace("&", "");
         product = product.replace("&", "");
@@ -73,10 +60,10 @@ public class NaverPostConverter extends PostConverter {
                            count);
     }
 
-    OrderIndexInfo getOrderIndexInfo(String[][] orderSheet) {
+    OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
         String[] orderHeaderRow = orderSheet[HEADER_ROW_INDEX];
 
-        return OrderIndexInfo.builder()
+        return OrderColumnIndex.builder()
                 .nameColumnIndex(getIndex(orderHeaderRow, "수취인명"))
                 .postcodeColumnIndex(getIndex(orderHeaderRow, "우편번호"))
                 .addressColumnIndex(getIndex(orderHeaderRow, "통합배송지"))
@@ -89,4 +76,16 @@ public class NaverPostConverter extends PostConverter {
                 .build();
     }
 
+
+    private Workbook decryptExcelFile(MultipartFile file) throws Exception {
+        POIFSFileSystem fs = new POIFSFileSystem(file.getInputStream());
+        EncryptionInfo info = new EncryptionInfo(fs);
+        Decryptor decryptor = Decryptor.getInstance(info);
+
+        if (!decryptor.verifyPassword("1111")) {
+            throw new Exception("Incorrect password");
+        }
+
+        return WorkbookFactory.create(decryptor.getDataStream(fs));
+    }
 }
