@@ -1,7 +1,6 @@
 package com.example.justpost.domain.post;
 
 import com.example.justpost.domain.InvoiceNumberMap;
-import com.example.justpost.domain.Post;
 import com.example.justpost.domain.PostReservation;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
@@ -23,21 +22,6 @@ public class CuPostHandler extends PostHandler {
     public static final String POST_TEMPLATE_FILE_NAME = "cu_대량발송_템플릿.xlsx";
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
-
-    private static Post makeInvoice(String string) {
-        String name = string.split("전화번호")[0];
-        String postcode = string.split("\\[")[1]
-                .split("]")[0];
-        String invoiceNumber = string.split("운송장번호")[1]
-                .split("배송조회")[0];
-
-        Post post = Post.builder()
-                .name(name)
-                .postcode(postcode)
-                .invoiceNumber(invoiceNumber)
-                .build();
-        return post;
-    }
 
     @Override
     public InvoiceNumberMap getInvoiceNumberMap(String postString) {

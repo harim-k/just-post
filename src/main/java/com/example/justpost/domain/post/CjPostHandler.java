@@ -1,7 +1,6 @@
 package com.example.justpost.domain.post;
 
 import com.example.justpost.domain.InvoiceNumberMap;
-import com.example.justpost.domain.Post;
 import com.example.justpost.domain.PostColumnIndex;
 import com.example.justpost.domain.PostReservation;
 import com.example.justpost.domain.utils.ExcelUtil;
@@ -53,15 +52,6 @@ public class CjPostHandler extends PostHandler {
         }
 
         return invoiceNumberMap;
-    }
-
-    private Post getInvoiceNumberMap(String[] postRow,
-                                     PostColumnIndex postColumnIndex) {
-        return Post.builder()
-                .name(postRow[postColumnIndex.getNameColumnIndex()])
-                .postcode(postRow[postColumnIndex.getPostcodeColumnIndex()])
-                .invoiceNumber(StringUtils.replace(postRow[postColumnIndex.getInvoiceNumberColumnIndex()], "-", ""))
-                .build();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.example.justpost.domain.store.afterPost;
 
 import com.example.justpost.domain.InvoiceNumberMap;
-import com.example.justpost.domain.Post;
 import com.example.justpost.domain.PostColumnIndex;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
@@ -10,10 +9,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.example.justpost.domain.utils.StringUtil.getIndex;
@@ -29,29 +26,12 @@ public class AblyAfterPostConverter extends AfterPostConverter {
                                              InvoiceNumberMap invoiceNumberMap) throws Exception {
         List<List<String>> afterPostValues = new ArrayList<>();
 
-        List<Post> existPosts = convertAndSave2(file, invoiceNumberMap);
-
-        for (Post post : existPosts) {
-            afterPostValues.add(Arrays.asList(
-                    post.getName(),
-                    post.getPostcode(),
-                    post.getInvoiceNumber()));
-        }
-
-        return afterPostValues;
-    }
-
-    private List<Post> convertAndSave2(MultipartFile file,
-                                       InvoiceNumberMap invoiceNumberMap) throws Exception {
-        List<Post> existPosts = new ArrayList<>();
-
         Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
         Sheet orderSheet = orderWorkbook.getSheetAt(SHEET_INDEX);
         String[][] orderSheet2 = ExcelUtil.workbookToArray(
                 orderWorkbook, SHEET_INDEX, HEADER_ROW_INDEX);
 
         PostColumnIndex postColumnIndex = getPostColumnIndex(orderSheet2);
-
 
         for (int rowIndex = HEADER_ROW_INDEX + 1; rowIndex < orderSheet2.length; rowIndex++) {
             String[] orderRow = orderSheet2[rowIndex];
@@ -60,15 +40,9 @@ public class AblyAfterPostConverter extends AfterPostConverter {
             String postcode = orderRow[postColumnIndex.getPostcodeColumnIndex()];
             String invoiceNumber = invoiceNumberMap.get(name, postcode);
 
-            Post post = Post.builder()
-                    .name(name)
-                    .postcode(postcode)
-                    .invoiceNumber(invoiceNumber)
-                    .build();
-
             // 에이블리는 주문 엑셀 파일에 운송장번호를 넣어 업로드하는 구조
             orderSheet.getRow(rowIndex).createCell(5).setCellValue(invoiceNumber);
-            existPosts.add(post);
+            afterPostValues.add(ExcelUtil.getValues(orderSheet.getRow(rowIndex)));
         }
 
         // save after post workbook
@@ -77,7 +51,7 @@ public class AblyAfterPostConverter extends AfterPostConverter {
         // close workbook
         orderWorkbook.close();
 
-        return existPosts;
+        return afterPostValues;
     }
 
     @Override
@@ -91,14 +65,6 @@ public class AblyAfterPostConverter extends AfterPostConverter {
                 .nameColumnIndex(getIndex(headerRow, "수취인명"))
                 .postcodeColumnIndex(getIndex(headerRow, "우편번호"))
                 .invoiceNumberColumnIndex(getIndex(headerRow, "송장번호"))
-                .build();
-    }
-
-    private Post getPost(String[] postRow, PostColumnIndex postColumnIndex) {
-        return Post.builder()
-                .name(postRow[postColumnIndex.getNameColumnIndex()])
-                .postcode(postRow[postColumnIndex.getPostcodeColumnIndex()])
-                .invoiceNumber(StringUtils.replace(postRow[postColumnIndex.getInvoiceNumberColumnIndex()], "-", ""))
                 .build();
     }
 }
