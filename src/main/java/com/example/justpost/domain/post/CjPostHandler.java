@@ -94,8 +94,8 @@ public class CjPostHandler extends PostHandler {
         List<String> rowValues = new ArrayList<>();
 
         rowValues.add(postReservation.getName());
-        rowValues.add(postReservation.getAddress());
         rowValues.add(postReservation.getContact1());
+        rowValues.add(postReservation.getAddress());
         rowValues.add(String.join(" ", postReservation.getProducts()));
         rowValues.add(String.valueOf(postReservation.getProducts().size()));
         rowValues.add(postReservation.getMessage());

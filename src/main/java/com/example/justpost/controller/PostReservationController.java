@@ -15,8 +15,8 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/post")
-public class PostController {
+@RequestMapping("/postReservation")
+public class PostReservationController {
     public final PostService postService;
 
     @PostMapping("/convert")

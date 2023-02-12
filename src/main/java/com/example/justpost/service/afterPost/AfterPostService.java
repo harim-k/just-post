@@ -39,7 +39,6 @@ public class AfterPostService {
             invoiceNumberMap = postHandler.getInvoiceNumberMap(postString);
         }
 
-        //TODO postMap을 넘기도록 리팩터링
         List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoiceNumberMap);
 
         return afterPostValues;
@@ -51,6 +50,5 @@ public class AfterPostService {
         AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
         String filePath = afterPostConverter.getAfterPostFilePath();
         FileUtil.downloadFile(response, filePath);
-
     }
 }
