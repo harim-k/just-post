@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>just postReservation</title>
+    <title>just post</title>
     <meta content="f8c5c5b9b4901ef43322866f04db422ab521f552" name="naver-site-verification"/>
 </head>
 
@@ -11,21 +11,22 @@
 <hr>
 
 <form enctype="multipart/form-data" method="post">
-    (스토어 주문 파일)
+    1. 스토어 주문 파일 업로드
     <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
            type="file">
 
     <p></p>
-    (스토어)
+    2. 스토어 선택
     <input checked name="convertType" type="radio" value="NAVER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_POST">에이블리
-    <p></p>
-
-    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/postReservation/convert}" type="submit"
-           value="엑셀 파일 변환">
+    <p>
+        3.
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/postReservation/convert}" type="submit"
+               value="엑셀 파일 변환">
+    </p>
 </form>
 
 <p></p>
@@ -33,21 +34,23 @@
 
 
 <form enctype="multipart/form-data" method="get">
-    (스토어)
+    4. 스토어 선택
     <input checked name="convertType" type="radio" value="NAVER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_POST">에이블리
 
-    <p></p>
-    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/postReservation/download/CJ_POST}" type="submit"
-           value="cj 대량발송 엑셀 파일 다운로드">
-    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/postReservation/download/GS_POST}" type="submit"
-           value="gs 대량발송 엑셀 파일 다운로드">
-    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/postReservation/download/CU_POST}" type="submit"
-           value="cu 대량발송 엑셀 파일 다운로드">
+    <p>
+        5.
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/postReservation/download/CJ_POST}" type="submit"
+               value="cj 대량발송 엑셀 파일 다운로드">
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/postReservation/download/GS_POST}" type="submit"
+               value="gs 대량발송 엑셀 파일 다운로드">
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/postReservation/download/CU_POST}" type="submit"
+               value="cu 대량발송 엑셀 파일 다운로드">
+    </p>
 </form>
 
 
@@ -82,48 +85,51 @@
 <hr>
 
 <form enctype="multipart/form-data" method="post">
-    (스토어 주문 파일)
+    1. 스토어 주문 파일 업로드
     <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
            type="file">
     <p></p>
 
-    (스토어)
+    2. 스토어 선택
     <input checked name="convertType" type="radio" value="NAVER_AFTER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_AFTER_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_AFTER_POST">에이블리
     <p></p>
 
-    (cj 택배 접수 파일)
+    3. cj 택배 접수 파일
     <input name="postFile" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file"
            type="file">
     <p></p>
 
     <p>
-        (gs/cu 택배 예약 내역)
+        3. gs/cu 택배 예약 내역
         <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="1"></textarea>
     </p>
-
+    <p>
+        4.
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
            th:formaction="@{/afterPost/convert}" type="submit"
            value="엑셀 파일 변환">
+    <p>
 </form>
 
 <p></p>
 <hr>
 
 <form enctype="multipart/form-data" method="get">
-    (스토어)
+    5. 스토어 선택
     <input checked name="convertType" type="radio" value="NAVER_AFTER_POST">네이버
     <input name="convertType" type="radio" value="COUPANG_AFTER_POST">쿠팡
     <input name="convertType" type="radio" value="ABLY_AFTER_POST">에이블리
 
-    <p></p>
-
-    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/afterPost/download}" type="submit"
-           value="발송처리 엑셀 파일 다운로드">
+    <p>
+        6.
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/afterPost/download}" type="submit"
+               value="발송처리 엑셀 파일 다운로드">
+    </p>
 </form>
 
 <p></p>
