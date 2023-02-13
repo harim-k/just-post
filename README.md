@@ -5,14 +5,10 @@
 #### 택배사 : cj 택배, gs 편의점 택배, cu 편의점 택배
 
 
-- Install the dependencies using `pip install -r requirements.txt`.
-
 - Start the python server,
 
-  local : `./run.sh` or `python manage.py runserver 0:8080`
+  local : `./run.sh` or `java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar`
 
-  AWS   : `./aws.sh` or `nohup python3 manage.py runserver 0.0.0.0:8080 &`
+  AWS   : `./aws.sh` or `nohup java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar &`
 
-
-- Kill python server, `pkill python`
 
