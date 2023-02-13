@@ -28,7 +28,7 @@ public class AfterPostController {
         List<List<String>> afterPostValues = afterPostService.convertAndSave(
                 orderFile, convertType, postFile, afterPostString);
         model.addAttribute("afterPostExcelData", afterPostValues);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/download")

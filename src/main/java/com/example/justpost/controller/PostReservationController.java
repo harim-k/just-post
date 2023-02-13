@@ -25,7 +25,7 @@ public class PostReservationController {
                           Model model) {
         List<PostReservation> postReservations = postService.convertAndSave(orderFile, convertType);
         model.addAttribute("postReservations", postReservations);
-        return "/index";
+        return "index";
     }
 
 
