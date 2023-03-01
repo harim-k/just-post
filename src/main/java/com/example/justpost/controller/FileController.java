@@ -4,20 +4,23 @@ import com.example.justpost.domain.utils.FileUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
 public class FileController {
 
-    @GetMapping("/merge")
-    public void mergeExcelFiles(@RequestParam("file1") MultipartFile file1,
-                                @RequestParam("file2") MultipartFile file2) {
+    @PostMapping("/merge")
+    public void mergeExcelFiles(HttpServletResponse response,
+                                @RequestParam("files") List<MultipartFile> files) {
         try {
-            FileUtil.mergeExcelFiles(file1, file2);
+            FileUtil.mergeExcelFiles(response, files);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

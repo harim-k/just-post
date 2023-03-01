@@ -154,12 +154,12 @@
 <h1>엑셀 파일 합치기</h1>
 <hr>
 
-<form enctype="multipart/form-data" method="get">
-    <input multiple name="excel_file" required="required" style="border: 1px solid black; padding: 5px;"
+<form enctype="multipart/form-data" method="post">
+    <input multiple name="files" required="required" style="border: 1px solid black; padding: 5px;"
            title="Upload excel file" type="file">
     <p></p>
     <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/download/MERGE}" type="submit"
+           th:formaction="@{/merge}" type="submit"
            value="합친 엑셀 파일 다운로드">
 </form>
 

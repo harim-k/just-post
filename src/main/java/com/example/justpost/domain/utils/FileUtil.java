@@ -21,6 +21,7 @@ public class FileUtil {
 
     public static final String POST_FILE_PATH = "src/main/resources/post/";
     public static final String AFTER_POST_FILE_PATH = "src/main/resources/afterPost/";
+    public static final String MERGE_FILE_PATH = "src/main/resources/merge/";
     public static final String POST_TEMPLATE_FILE_PATH = "src/main/resources/templates/post/";
     public static final String AFTER_POST_TEMPLATE_FILE_PATH = "src/main/resources/templates/afterPost/";
     public static final String MERGED_EXCEL_FILE_NAME = "mergedExcelFile.xlsx";
@@ -57,43 +58,47 @@ public class FileUtil {
     }
 
 
-    public static void mergeExcelFiles(MultipartFile file1,
-                                       MultipartFile file2) throws IOException {
+    public static void mergeExcelFiles(HttpServletResponse response,
+                                       List<MultipartFile> files) throws IOException {
+        final String fileName = MERGED_EXCEL_FILE_NAME;
+        final String filePath = MERGE_FILE_PATH + MERGED_EXCEL_FILE_NAME;
+
         // Create a new workbook and sheet to hold the merged data
         XSSFWorkbook mergedWorkbook = new XSSFWorkbook();
         XSSFSheet mergedSheet = mergedWorkbook.createSheet();
 
-        // Read excel files
-        Workbook workbook1 = WorkbookFactory.create(file1.getInputStream());
-        Sheet sheet1 = workbook1.getSheetAt(0);
+        copyHeaderRow(mergedSheet, files.get(0));
 
-        Workbook workbook2 = WorkbookFactory.create(file2.getInputStream());
-        Sheet sheet2 = workbook1.getSheetAt(0);
+        for (MultipartFile file : files) {
+            Workbook workbook = WorkbookFactory.create(file.getInputStream());
+            Sheet sheet = workbook.getSheetAt(0);
+            List<Row> rows = new ArrayList<>();
 
-        List<Row> rows1 = new ArrayList<>();
-        List<Row> rows2 = new ArrayList<>();
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                rows.add(sheet.getRow(i));
+            }
 
-        // Copy the data from the first excel file to the new sheet
-        for (int i = 0; i <= sheet1.getLastRowNum(); i++) {
-            rows1.add(sheet1.getRow(i));
+            mergedSheet.copyRows(rows, mergedSheet.getLastRowNum() + 1,
+                                 new CellCopyPolicy());
+            workbook.close();
         }
 
-        for (int i = 1; i <= sheet2.getLastRowNum(); i++) {
-            rows2.add(sheet2.getRow(i));
-        }
+        ExcelUtil.save(mergedWorkbook, filePath);
 
-        mergedSheet.copyRows(rows1, 0, new CellCopyPolicy());
-        mergedSheet.copyRows(rows2, rows1.size(), new CellCopyPolicy());
-
-
-        // Write the merged data to a new excel file
-        FileOutputStream outputStream = new FileOutputStream(MERGED_EXCEL_FILE_NAME);
-        mergedWorkbook.write(outputStream);
-        outputStream.close();
-
-        // Close the workbooks
-        workbook1.close();
-        workbook2.close();
         mergedWorkbook.close();
+
+        downloadFile(response, filePath, fileName);
+    }
+
+    private static void copyHeaderRow(XSSFSheet mergedSheet,
+                                      MultipartFile file) throws IOException {
+        Workbook workbook = WorkbookFactory.create(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+
+        List<Row> rows = new ArrayList<>();
+        rows.add(sheet.getRow(0));
+
+        mergedSheet.copyRows(rows, mergedSheet.getLastRowNum() + 1,
+                             new CellCopyPolicy());
     }
 }
