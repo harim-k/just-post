@@ -5,10 +5,14 @@
 #### 택배사 : cj 택배, gs 편의점 택배, cu 편의점 택배
 
 
-- Start the python server,
+- Start the java server,
 
   local : `./run.sh` or `java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar`
-
   AWS   : `./aws.sh` or `nohup java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar &`
+
+- Deploy
+
+# get in server
+$ ssh.sh
 
 
