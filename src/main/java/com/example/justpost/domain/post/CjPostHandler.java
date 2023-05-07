@@ -48,7 +48,7 @@ public class CjPostHandler extends PostHandler {
             String postcode = postRow[postColumnIndex.getPostcodeColumnIndex()];
             String invoiceNumber = StringUtils.replace(postRow[postColumnIndex.getInvoiceNumberColumnIndex()], "-", "");
 
-            invoiceNumberMap.put(name, postcode, invoiceNumber);
+            invoiceNumberMap.put(postcode, invoiceNumber);
         }
 
         return invoiceNumberMap;

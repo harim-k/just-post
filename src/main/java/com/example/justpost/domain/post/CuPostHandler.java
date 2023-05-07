@@ -40,7 +40,7 @@ public class CuPostHandler extends PostHandler {
             String invoiceNumber = string.split("운송장번호")[1]
                     .split("배송조회")[0];
 
-            invoiceNumberMap.put(name, postcode, invoiceNumber);
+            invoiceNumberMap.put(postcode, invoiceNumber);
         }
 
         return invoiceNumberMap;

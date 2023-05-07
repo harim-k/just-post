@@ -38,7 +38,7 @@ public class AblyAfterPostConverter extends AfterPostConverter {
 
             String name = orderRow[postColumnIndex.getNameColumnIndex()];
             String postcode = orderRow[postColumnIndex.getPostcodeColumnIndex()];
-            String invoiceNumber = invoiceNumberMap.get(name, postcode);
+            String invoiceNumber = invoiceNumberMap.get(postcode);
 
             // 에이블리는 주문 엑셀 파일에 운송장번호를 넣어 업로드하는 구조
             orderSheet.getRow(rowIndex).createCell(5).setCellValue(invoiceNumber);

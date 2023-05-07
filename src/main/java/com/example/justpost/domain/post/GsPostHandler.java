@@ -44,7 +44,7 @@ public class GsPostHandler extends PostHandler {
             String invoiceNumber = string.split("운송장번호")[1]
                     .split("Comment")[0];
 
-            invoiceNumberMap.put(name, postcode, invoiceNumber);
+            invoiceNumberMap.put(postcode, invoiceNumber);
         }
 
         return invoiceNumberMap;

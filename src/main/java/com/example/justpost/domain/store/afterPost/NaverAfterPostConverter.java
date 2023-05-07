@@ -67,7 +67,7 @@ public class NaverAfterPostConverter extends AfterPostConverter {
             String 수취인명 = ExcelUtil.getValue(orderRow.getCell(수취인명ColumnIndex));
             String 우편번호 = ExcelUtil.getValue(orderRow.getCell(우편번호ColumnIndex));
             String 상품주문번호 = ExcelUtil.getValue(orderRow.getCell(상품주문번호ColumnIndex));
-            String 운송장번호 = invoiceNumberMap.get(수취인명, 우편번호);
+            String 운송장번호 = invoiceNumberMap.get(우편번호);
 
             if (운송장번호 == null) {
                 continue;

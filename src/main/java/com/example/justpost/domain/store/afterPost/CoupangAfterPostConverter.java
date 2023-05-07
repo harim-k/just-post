@@ -70,7 +70,7 @@ public class CoupangAfterPostConverter extends AfterPostConverter {
             String 묶음배송번호 = ExcelUtil.getValue(orderRow.getCell(묶음배송번호ColumnIndex));
             String 주문번호 = ExcelUtil.getValue(orderRow.getCell(주문번호ColumnIndex));
 
-            String 운송장번호 = invoiceNumberMap.get(수취인명, 우편번호);
+            String 운송장번호 = invoiceNumberMap.get(우편번호);
             String 옵션ID = ExcelUtil.getValue(orderRow.getCell(옵션IDColumnIndex));
 
             if (운송장번호 == null) {

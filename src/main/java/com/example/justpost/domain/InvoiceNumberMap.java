@@ -10,13 +10,13 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class InvoiceNumberMap {
-    private final Map<Pair<String, String>, String> map = new HashMap<>();
+    private final Map<String, String> map = new HashMap<>();
 
-    public String get(String name, String postcode) {
-        return map.getOrDefault(new Pair<>(name, postcode), null);
+    public String get(String postcode) {
+        return map.getOrDefault(postcode, null);
     }
 
-    public void put(String name, String postcode, String invoiceNumber) {
-        map.put(new Pair<>(name, postcode), invoiceNumber);
+    public void put(String postcode, String invoiceNumber) {
+        map.put(postcode, invoiceNumber);
     }
 }
