@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class AfterPostServiceTest {
     private final static String TEST_ORDER_FILE_PATH = "src/test/resources/order/";
-    private final static String TEST_AFTER_POST_FILE_PATH = "src/test/resources/afterPost/";
+    private final static String TEST_AFTER_POST_FILE_PATH = "src/test/resources/after-post/";
     @Autowired
     private AfterPostService afterPostService;
     @Autowired
