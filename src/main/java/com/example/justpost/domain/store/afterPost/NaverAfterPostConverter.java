@@ -23,8 +23,8 @@ import java.util.List;
 public class NaverAfterPostConverter extends AfterPostConverter {
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 1;
-    public static final String AFTER_POST_FILE_NAME = "naver_after_post.xls";
-    public static final String AFTER_POST_TEMPLATE_FILE_NAME = "naver_after_post_template.xlsx";
+    public static final String AFTER_POST_FILE_NAME = "네이버_발송처리.xls";
+    public static final String AFTER_POST_TEMPLATE_FILE_NAME = "네이버_발송처리_템플릿.xlsx";
     public static final String SHEET_NAME = "발송처리";
 
 

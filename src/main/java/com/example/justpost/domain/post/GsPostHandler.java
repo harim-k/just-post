@@ -18,8 +18,8 @@ import java.util.List;
 
 @Component
 public class GsPostHandler extends PostHandler {
-    public static final String POST_FILE_NAME = "gs_post.xls";
-    public static final String POST_TEMPLATE_FILE_NAME = "gs_post_template.xls";
+    public static final String POST_FILE_NAME = "gs_대량발송.xls";
+    public static final String POST_TEMPLATE_FILE_NAME = "gs_대량발송_템플릿.xls";
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
 

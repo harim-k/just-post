@@ -20,8 +20,8 @@ import java.util.List;
 public class CoupangAfterPostConverter extends AfterPostConverter {
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
-    public static final String AFTER_POST_FILE_NAME = "coupang_after_post.xlsx";
-    public static final String AFTER_POST_TEMPLATE_FILE_NAME = "coupang_after_post_template.xlsx";
+    public static final String AFTER_POST_FILE_NAME = "쿠팡_발송처리.xlsx";
+    public static final String AFTER_POST_TEMPLATE_FILE_NAME = "쿠팡_발송처리_템플릿.xlsx";
 
 
     @Override
