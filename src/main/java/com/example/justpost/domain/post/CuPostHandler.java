@@ -18,8 +18,8 @@ import java.util.List;
 
 @Component
 public class CuPostHandler extends PostHandler {
-    public static final String POST_FILE_NAME = "cu_대량발송.xlsx";
-    public static final String POST_TEMPLATE_FILE_NAME = "cu_대량발송_템플릿.xlsx";
+    public static final String POST_FILE_NAME = "cu_post.xlsx";
+    public static final String POST_TEMPLATE_FILE_NAME = "cu_post_template.xlsx";
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
 
