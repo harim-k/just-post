@@ -19,7 +19,7 @@ import static com.example.justpost.domain.utils.StringUtil.getIndex;
 public class AblyAfterPostConverter extends AfterPostConverter {
     public static final int SHEET_INDEX = 1;
     public static final int HEADER_ROW_INDEX = 0;
-    public static final String AFTER_POST_FILE_NAME = "에이블리_발송처리.xlsx";
+    public static final String AFTER_POST_FILE_NAME = "ably_after_post.xlsx";
 
     @Override
     public List<List<String>> convertAndSave(MultipartFile file,

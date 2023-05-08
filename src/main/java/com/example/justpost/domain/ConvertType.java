@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ConvertType {
 
-    NAVER_POST("네이버"), COUPANG_POST("쿠팡"), ABLY_POST("에이블리"),
-    NAVER_AFTER_POST("네이버"), COUPANG_AFTER_POST("쿠팡"), ABLY_AFTER_POST("에이블리"),
+    NAVER_POST("naver"), COUPANG_POST("coupang"), ABLY_POST("ably"),
+    NAVER_AFTER_POST("naver"), COUPANG_AFTER_POST("coupang"), ABLY_AFTER_POST("ably"),
     ;
 
 
