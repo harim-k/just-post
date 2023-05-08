@@ -4,15 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
 **/src/main/resources/post/*
-**/src/main/resources/after-post/*
-**/src/main/resources/merge/*
-
-!**/src/main/resources/post/
-!**/src/main/resources/after-post/
-!**/src/main/resources/merge/
-
+**/src/main/resources/afterPost/*
 *.pem
 ssh.sh
 nohup.out
