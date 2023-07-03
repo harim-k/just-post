@@ -1,7 +1,8 @@
 package com.example.justpost.domain.post;
 
-import com.example.justpost.domain.InvoiceNumberMap;
-import com.example.justpost.domain.PostReservation;
+import com.example.justpost.domain.InvoiceMap;
+import com.example.justpost.domain.Post;
+import com.example.justpost.domain.Posts;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -25,8 +26,8 @@ public class GsPostHandler extends PostHandler {
 
 
     @Override
-    public InvoiceNumberMap getInvoiceNumberMap(String postString) {
-        InvoiceNumberMap invoiceNumberMap = new InvoiceNumberMap();
+    public InvoiceMap getInvoiceMap(String postString) {
+        InvoiceMap invoiceMap = new InvoiceMap();
 
         String[] strings = postString.replace("\r\n", "")
                 .replace("\n", "")
@@ -44,14 +45,14 @@ public class GsPostHandler extends PostHandler {
             String invoiceNumber = string.split("운송장번호")[1]
                     .split("Comment")[0];
 
-            invoiceNumberMap.put(postcode, invoiceNumber);
+            invoiceMap.put(postcode, invoiceNumber);
         }
 
-        return invoiceNumberMap;
+        return invoiceMap;
     }
 
     @Override
-    public InvoiceNumberMap getInvoiceNumberMap(MultipartFile postFile) {
+    public InvoiceMap getInvoiceMap(MultipartFile postFile) {
         return null;
     }
 
@@ -67,7 +68,7 @@ public class GsPostHandler extends PostHandler {
     }
 
     @Override
-    Workbook convertToWorkbook(List<PostReservation> postReservations) throws Exception {
+    Workbook convertToWorkbook(Posts posts) throws Exception {
         Workbook postWorkbook = new HSSFWorkbook();
         Workbook postTemplateWorkbook = WorkbookFactory.create(
                 new FileInputStream(getPostTemplateFilePath()));
@@ -79,11 +80,11 @@ public class GsPostHandler extends PostHandler {
         ExcelUtil.copyRow(postTemplateSheet, postSheet, HEADER_ROW_INDEX);
 
         // set second ~ last row from postValues
-        for (int i = 0; i < postReservations.size(); i++) {
-            PostReservation postReservation = postReservations.get(i);
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
 
             ExcelUtil.setRow(postSheet,
-                             convertToForm(postReservation),
+                             convertToForm(post),
                              HEADER_ROW_INDEX + i + 1);
         }
         postTemplateWorkbook.close();
@@ -91,18 +92,18 @@ public class GsPostHandler extends PostHandler {
         return postWorkbook;
     }
 
-    private List<String> convertToForm(PostReservation postReservation) {
+    private List<String> convertToForm(Post post) {
         List<String> rowValues = new ArrayList<>();
 
-        rowValues.add(postReservation.getName());
-        rowValues.add(postReservation.getPostcode());
-        rowValues.add(postReservation.getAddress());
-        rowValues.add(postReservation.getAddress());
-        rowValues.add(postReservation.getContact1());
-        rowValues.add(postReservation.getContact2());
+        rowValues.add(post.getName());
+        rowValues.add(post.getPostcode());
+        rowValues.add(post.getAddress());
+        rowValues.add(post.getAddress());
+        rowValues.add(post.getContact1());
+        rowValues.add(post.getContact2());
         rowValues.add(String.join(" ",
-                                  String.join(" ", postReservation.getProducts()),
-                                  postReservation.getMessage()));
+                                  String.join(" ", post.getProducts()),
+                                  post.getMessage()));
         rowValues.add("선불");
 
         return rowValues;

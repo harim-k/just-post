@@ -2,7 +2,8 @@ package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.DownloadType;
-import com.example.justpost.domain.PostReservation;
+import com.example.justpost.domain.Post;
+import com.example.justpost.domain.Posts;
 import com.example.justpost.domain.post.*;
 import com.example.justpost.domain.store.post.PostConverter;
 import com.example.justpost.domain.store.post.PostConverterFactory;
@@ -26,18 +27,18 @@ public class PostService {
     private final CuPostHandler cuPostHandler;
 
     @SneakyThrows
-    public List<PostReservation> convertAndSave(MultipartFile orderFile, ConvertType convertType) {
+    public Posts convertAndSave(MultipartFile orderFile, ConvertType convertType) {
         PostConverter postConverter = postConverterFactory.get(convertType);
-        List<PostReservation> postReservations = postConverter.convert(orderFile);
-        save(postReservations, convertType.getStoreName());
+        Posts posts = postConverter.convert(orderFile);
+        save(posts, convertType.getStoreName());
 
-        return postReservations;
+        return posts;
     }
 
-    private void save(List<PostReservation> postReservations, String storeName) throws Exception {
-        cjPostHandler.save(postReservations, storeName);
-        gsPostHandler.save(postReservations, storeName);
-        cuPostHandler.save(postReservations, storeName);
+    private void save(Posts posts, String storeName) throws Exception {
+        cjPostHandler.save(posts, storeName);
+        gsPostHandler.save(posts, storeName);
+        cuPostHandler.save(posts, storeName);
     }
 
     public void downloadFile(HttpServletResponse response,

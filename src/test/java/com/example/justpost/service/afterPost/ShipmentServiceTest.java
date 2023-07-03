@@ -1,11 +1,9 @@
 package com.example.justpost.service.afterPost;
 
 import com.example.justpost.domain.ConvertType;
-import com.example.justpost.domain.store.afterPost.AblyAfterPostConverter;
 import com.example.justpost.domain.store.afterPost.AfterPostConverter;
 import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
 import com.example.justpost.domain.utils.ExcelUtil;
-import com.example.justpost.domain.utils.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,11 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
-class AfterPostServiceTest {
+class ShipmentServiceTest {
     private final static String TEST_ORDER_FILE_PATH = "src/test/resources/order/";
     private final static String TEST_AFTER_POST_FILE_PATH = "src/test/resources/after-post/";
     @Autowired
-    private AfterPostService afterPostService;
+    private ShipmentService shipmentService;
     @Autowired
     private AfterPostConverterFactory afterPostConverterFactory;
 
@@ -86,7 +84,7 @@ class AfterPostServiceTest {
 
         MockMultipartFile orderFile = getMockMultipartFile(orderFileName, orderFilePath);
 
-        afterPostService.convertAndSave(
+        shipmentService.convertAndSave(
                 orderFile, convertType,
                 null, afterPostString);
 
@@ -111,7 +109,7 @@ class AfterPostServiceTest {
         MockMultipartFile postFile = convertType == ConvertType.ABLY_AFTER_POST ?
                 getMockMultipartFile(postFileName, postFilePath) : null;
 
-        afterPostService.convertAndSave(
+        shipmentService.convertAndSave(
                 orderFile, convertType,
                 postFile, "");
 

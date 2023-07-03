@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.afterPost;
 
-import com.example.justpost.domain.InvoiceNumberMap;
+import com.example.justpost.domain.InvoiceMap;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.ss.usermodel.Row;
@@ -26,8 +26,8 @@ public class CoupangAfterPostConverter extends AfterPostConverter {
 
     @Override
     public List<List<String>> convertAndSave(MultipartFile file,
-                                             InvoiceNumberMap invoiceNumberMap) throws Exception {
-        List<List<String>> afterPostValues = convert(file, invoiceNumberMap);
+                                             InvoiceMap invoiceMap) throws Exception {
+        List<List<String>> afterPostValues = convert(file, invoiceMap);
         saveAsAfterPostFile(afterPostValues);
 
         return afterPostValues;
@@ -43,7 +43,7 @@ public class CoupangAfterPostConverter extends AfterPostConverter {
     }
 
     public List<List<String>> convert(MultipartFile file,
-                                      InvoiceNumberMap invoiceNumberMap) throws Exception {
+                                      InvoiceMap invoiceMap) throws Exception {
         List<List<String>> afterPostValues = new ArrayList<>();
 
         Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
@@ -70,7 +70,7 @@ public class CoupangAfterPostConverter extends AfterPostConverter {
             String 묶음배송번호 = ExcelUtil.getValue(orderRow.getCell(묶음배송번호ColumnIndex));
             String 주문번호 = ExcelUtil.getValue(orderRow.getCell(주문번호ColumnIndex));
 
-            String 운송장번호 = invoiceNumberMap.get(우편번호);
+            String 운송장번호 = invoiceMap.get(우편번호);
             String 옵션ID = ExcelUtil.getValue(orderRow.getCell(옵션IDColumnIndex));
 
             if (운송장번호 == null) {

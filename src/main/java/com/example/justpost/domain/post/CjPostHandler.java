@@ -1,8 +1,9 @@
 package com.example.justpost.domain.post;
 
-import com.example.justpost.domain.InvoiceNumberMap;
+import com.example.justpost.domain.InvoiceMap;
 import com.example.justpost.domain.PostColumnIndex;
-import com.example.justpost.domain.PostReservation;
+import com.example.justpost.domain.Post;
+import com.example.justpost.domain.Posts;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -28,13 +29,13 @@ public class CjPostHandler extends PostHandler {
 
 
     @Override
-    public InvoiceNumberMap getInvoiceNumberMap(String postString) {
+    public InvoiceMap getInvoiceMap(String postString) {
         return null;
     }
 
     @Override
-    public InvoiceNumberMap getInvoiceNumberMap(MultipartFile postFile) throws Exception {
-        InvoiceNumberMap invoiceNumberMap = new InvoiceNumberMap();
+    public InvoiceMap getInvoiceMap(MultipartFile postFile) throws Exception {
+        InvoiceMap invoiceMap = new InvoiceMap();
 
         Workbook postWorkbook = WorkbookFactory.create(postFile.getInputStream());
         String[][] postSheet = ExcelUtil.workbookToArray(postWorkbook, SHEET_INDEX, HEADER_ROW_INDEX);
@@ -48,10 +49,10 @@ public class CjPostHandler extends PostHandler {
             String postcode = postRow[postColumnIndex.getPostcodeColumnIndex()];
             String invoiceNumber = StringUtils.replace(postRow[postColumnIndex.getInvoiceNumberColumnIndex()], "-", "");
 
-            invoiceNumberMap.put(postcode, invoiceNumber);
+            invoiceMap.put(postcode, invoiceNumber);
         }
 
-        return invoiceNumberMap;
+        return invoiceMap;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class CjPostHandler extends PostHandler {
     }
 
     @Override
-    Workbook convertToWorkbook(List<PostReservation> postReservations) throws Exception {
+    Workbook convertToWorkbook(Posts posts) throws Exception {
         Workbook postWorkbook = new XSSFWorkbook();
         Workbook postTemplateWorkbook = WorkbookFactory.create(
                 new FileInputStream(getPostTemplateFilePath()));
@@ -77,11 +78,11 @@ public class CjPostHandler extends PostHandler {
         ExcelUtil.copyRow(postTemplateSheet, postSheet, HEADER_ROW_INDEX);
 
         // set second ~ last row from postValues
-        for (int i = 0; i < postReservations.size(); i++) {
-            PostReservation postReservation = postReservations.get(i);
+        for (int i = 0; i < posts.size(); i++) {
+            Post post = posts.get(i);
 
             ExcelUtil.setRow(postSheet,
-                             convertToForm(postReservation),
+                             convertToForm(post),
                              HEADER_ROW_INDEX + i + 1);
         }
 
@@ -90,15 +91,15 @@ public class CjPostHandler extends PostHandler {
         return postWorkbook;
     }
 
-    private List<String> convertToForm(PostReservation postReservation) {
+    private List<String> convertToForm(Post post) {
         List<String> rowValues = new ArrayList<>();
 
-        rowValues.add(postReservation.getName());
-        rowValues.add(postReservation.getContact1());
-        rowValues.add(postReservation.getAddress());
-        rowValues.add(String.join(" ", postReservation.getProducts()));
-        rowValues.add(String.valueOf(postReservation.getProducts().size()));
-        rowValues.add(postReservation.getMessage());
+        rowValues.add(post.getName());
+        rowValues.add(post.getContact1());
+        rowValues.add(post.getAddress());
+        rowValues.add(String.join(" ", post.getProducts()));
+        rowValues.add(String.valueOf(post.getProducts().size()));
+        rowValues.add(post.getMessage());
 
         return rowValues;
     }

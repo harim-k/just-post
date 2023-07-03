@@ -24,52 +24,31 @@
     <p>
         3.
         <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-               th:formaction="@{/postReservation/convert}" type="submit"
-               value="엑셀 파일 변환">
-    </p>
-</form>
-
-<p></p>
-<hr>
-
-
-<form enctype="multipart/form-data" method="get">
-    4. 스토어 선택
-    <input checked name="convertType" type="radio" value="NAVER_POST">네이버
-    <input name="convertType" type="radio" value="COUPANG_POST">쿠팡
-    <input name="convertType" type="radio" value="ABLY_POST">에이블리
-
-    <p>
-        5.
-        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-               th:formaction="@{/postReservation/download/CJ_POST}" type="submit"
+               th:formaction="@{/reservation/convert/CJ_POST}" type="submit"
                value="cj 대량발송 엑셀 파일 다운로드">
         <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-               th:formaction="@{/postReservation/download/GS_POST}" type="submit"
+               th:formaction="@{/reservation/convert/GS_POST}" type="submit"
                value="gs 대량발송 엑셀 파일 다운로드">
         <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-               th:formaction="@{/postReservation/download/CU_POST}" type="submit"
+               th:formaction="@{/reservation/convert/CU_POST}" type="submit"
                value="cu 대량발송 엑셀 파일 다운로드">
     </p>
 </form>
 
-
 <p></p>
-
-
-<p></p>
+<hr>
 
 <hr>
 
 
-<th:block th:each="postReservation : ${postReservations}">
+<th:block th:each="reservation : ${reservations}">
     <tr>
-        <td th:text="${postReservation.getName()} "></td>
-        <td th:text="${postReservation.getPostcode()} "></td>
-        <td th:text="${postReservation.getAddress()} "></td>
-        <td th:text="${postReservation.getContact1()} "></td>
-        <td th:text="${postReservation.getProducts()} "></td>
-        <td th:text="${postReservation.getMessage()} "></td>
+        <td th:text="${reservation.getName()} "></td>
+        <td th:text="${reservation.getPostcode()} "></td>
+        <td th:text="${reservation.getAddress()} "></td>
+        <td th:text="${reservation.getContact1()} "></td>
+        <td th:text="${reservation.getProducts()} "></td>
+        <td th:text="${reservation.getMessage()} "></td>
     </tr>
     <br>
 </th:block>
@@ -109,27 +88,10 @@
     </p>
     <p>
         4.
-    <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-           th:formaction="@{/afterPost/convert}" type="submit"
-           value="엑셀 파일 변환">
-    <p>
-</form>
-
-<p></p>
-<hr>
-
-<form enctype="multipart/form-data" method="get">
-    5. 스토어 선택
-    <input checked name="convertType" type="radio" value="NAVER_AFTER_POST">네이버
-    <input name="convertType" type="radio" value="COUPANG_AFTER_POST">쿠팡
-    <input name="convertType" type="radio" value="ABLY_AFTER_POST">에이블리
-
-    <p>
-        6.
         <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
                th:formaction="@{/afterPost/download}" type="submit"
                value="발송처리 엑셀 파일 다운로드">
-    </p>
+    <p>
 </form>
 
 <p></p>

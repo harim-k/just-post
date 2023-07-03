@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.afterPost;
 
-import com.example.justpost.domain.InvoiceNumberMap;
+import com.example.justpost.domain.InvoiceMap;
 import com.example.justpost.domain.PostColumnIndex;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
@@ -23,7 +23,7 @@ public class AblyAfterPostConverter extends AfterPostConverter {
 
     @Override
     public List<List<String>> convertAndSave(MultipartFile file,
-                                             InvoiceNumberMap invoiceNumberMap) throws Exception {
+                                             InvoiceMap invoiceMap) throws Exception {
         List<List<String>> afterPostValues = new ArrayList<>();
 
         Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
@@ -38,7 +38,7 @@ public class AblyAfterPostConverter extends AfterPostConverter {
 
             String name = orderRow[postColumnIndex.getNameColumnIndex()];
             String postcode = orderRow[postColumnIndex.getPostcodeColumnIndex()];
-            String invoiceNumber = invoiceNumberMap.get(postcode);
+            String invoiceNumber = invoiceMap.get(postcode);
 
             // 에이블리는 주문 엑셀 파일에 운송장번호를 넣어 업로드하는 구조
             orderSheet.getRow(rowIndex).createCell(5).setCellValue(invoiceNumber);

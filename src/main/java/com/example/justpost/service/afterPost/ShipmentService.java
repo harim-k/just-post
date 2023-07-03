@@ -1,7 +1,7 @@
 package com.example.justpost.service.afterPost;
 
 import com.example.justpost.domain.ConvertType;
-import com.example.justpost.domain.InvoiceNumberMap;
+import com.example.justpost.domain.InvoiceMap;
 import com.example.justpost.domain.post.PostHandler;
 import com.example.justpost.domain.post.PostHandlerFactory;
 import com.example.justpost.domain.store.afterPost.AfterPostConverter;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class AfterPostService {
+public class ShipmentService {
 
     private final AfterPostConverterFactory afterPostConverterFactory;
     private final PostHandlerFactory postHandlerFactory;
@@ -32,14 +32,14 @@ public class AfterPostService {
 
         AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
         PostHandler postHandler = postHandlerFactory.get(postString);
-        InvoiceNumberMap invoiceNumberMap;
+        InvoiceMap invoiceMap;
         if (StringUtils.equals(postString, "")) {
-            invoiceNumberMap = postHandler.getInvoiceNumberMap(postFile);
+            invoiceMap = postHandler.getInvoiceMap(postFile);
         } else {
-            invoiceNumberMap = postHandler.getInvoiceNumberMap(postString);
+            invoiceMap = postHandler.getInvoiceMap(postString);
         }
 
-        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoiceNumberMap);
+        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoiceMap);
 
         return afterPostValues;
     }

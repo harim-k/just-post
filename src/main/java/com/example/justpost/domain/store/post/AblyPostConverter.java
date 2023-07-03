@@ -14,12 +14,12 @@ public class AblyPostConverter extends PostConverter {
         return SHEET_INDEX;
     }
 
-    int getHeaderRowIndex() {
+    public int getHeaderRowIndex() {
         return HEADER_ROW_INDEX;
     }
 
 
-    String getProduct(String product,
+    public String getProduct(String product,
                       String option,
                       String count) {
         // 특수문자 제거
