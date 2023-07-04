@@ -26,21 +26,21 @@ class PostServiceTest {
 
     @Test
     void test_네이버_발송처리() throws Exception {
-        final String storeName = "네이버";
+        final String storeName = "naver";
 
         test_대량발송_파일_변환(ConvertType.NAVER_POST, storeName);
     }
 
     @Test
     void test_쿠팡_발송처리() throws Exception {
-        final String storeName = "쿠팡";
+        final String storeName = "counpang";
 
         test_대량발송_파일_변환(ConvertType.COUPANG_POST, storeName);
     }
 
     @Test
     void test_에이블리_발송처리() throws Exception {
-        final String storeName = "에이블리";
+        final String storeName = "ably";
 
         test_대량발송_파일_변환(ConvertType.ABLY_POST, storeName);
     }
@@ -48,7 +48,7 @@ class PostServiceTest {
 
     private void test_대량발송_파일_변환(ConvertType convertType,
                                  String storeName) throws Exception {
-        final String orderFileName = storeName + "_주문.xlsx";
+        final String orderFileName = getkoreanStoreName(storeName) + "_주문.xlsx";
         final String orderFilePath = TEST_ORDER_FILE_PATH + orderFileName;
 
         final String actualCjPostFilePath = FileUtil.POST_FILE_PATH + storeName + "_" + CjPostHandler.POST_FILE_NAME;
@@ -75,5 +75,15 @@ class PostServiceTest {
     private MockMultipartFile getMockMultipartFile(String fileName, String path) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(path);
         return new MockMultipartFile(fileName, fileInputStream);
+    }
+
+    private String getkoreanStoreName(String storeName) {
+        if (storeName.equals("naver")) {
+            return "네이버";
+        } else if (storeName.equals("coupang")) {
+            return "쿠팡";
+        } else {
+            return "에이블리";
+        }
     }
 }
