@@ -2,7 +2,6 @@ package com.example.justpost.service.post;
 
 import com.example.justpost.domain.ConvertType;
 import com.example.justpost.domain.DownloadType;
-import com.example.justpost.domain.Post;
 import com.example.justpost.domain.Posts;
 import com.example.justpost.domain.post.*;
 import com.example.justpost.domain.store.post.PostConverter;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +27,8 @@ public class PostService {
     @SneakyThrows
     public Posts convertAndSave(MultipartFile orderFile, ConvertType convertType) {
         PostConverter postConverter = postConverterFactory.get(convertType);
-        Posts posts = postConverter.convert(orderFile);
+        Posts posts = Posts.create(orderFile, postConverter);
+
         save(posts, convertType.getStoreName());
 
         return posts;

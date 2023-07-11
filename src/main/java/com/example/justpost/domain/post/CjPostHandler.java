@@ -97,8 +97,8 @@ public class CjPostHandler extends PostHandler {
         rowValues.add(post.getName());
         rowValues.add(post.getContact1());
         rowValues.add(post.getAddress());
-        rowValues.add(String.join(" ", post.getProducts()));
-        rowValues.add(String.valueOf(post.getProducts().size()));
+        rowValues.add(post.getProduct().toString());
+        rowValues.add(String.valueOf(post.getProduct().size()));
         rowValues.add(post.getMessage());
 
         return rowValues;

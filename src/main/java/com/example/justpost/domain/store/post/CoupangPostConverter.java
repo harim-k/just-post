@@ -12,7 +12,7 @@ public class CoupangPostConverter extends PostConverter {
     public static final int HEADER_ROW_INDEX = 0;
 
 
-    int getSheetIndex() {
+    int getOrderSheetIndex() {
         return SHEET_INDEX;
     }
 
@@ -22,8 +22,8 @@ public class CoupangPostConverter extends PostConverter {
 
 
     public String getProduct(String product,
-                      String option,
-                      String count) {
+                             String option,
+                             String count) {
         // 특수문자 제거
         option = option.replace("&", "");
         product = product.replace("&", "");
@@ -38,7 +38,7 @@ public class CoupangPostConverter extends PostConverter {
                            count);
     }
 
-    OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
+    public OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
         String[] orderHeaderRow = orderSheet[HEADER_ROW_INDEX];
 
         return OrderColumnIndex.builder()

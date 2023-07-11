@@ -7,11 +7,11 @@ import static com.example.justpost.domain.utils.StringUtil.getIndex;
 
 @Component
 public class AblyPostConverter extends PostConverter {
-    public static final int SHEET_INDEX = 1;
+    public static final int ORDER_SHEET_INDEX = 1;
     public static final int HEADER_ROW_INDEX = 0;
 
-    int getSheetIndex() {
-        return SHEET_INDEX;
+    int getOrderSheetIndex() {
+        return ORDER_SHEET_INDEX;
     }
 
     public int getHeaderRowIndex() {
@@ -20,8 +20,8 @@ public class AblyPostConverter extends PostConverter {
 
 
     public String getProduct(String product,
-                      String option,
-                      String count) {
+                             String option,
+                             String count) {
         // 특수문자 제거
         option = option.replace("&", "");
         product = product.replace("&", "");
@@ -37,7 +37,7 @@ public class AblyPostConverter extends PostConverter {
     }
 
 
-    OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
+    public OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
         String[] orderHeaderRow = orderSheet[HEADER_ROW_INDEX];
 
         return OrderColumnIndex.builder()

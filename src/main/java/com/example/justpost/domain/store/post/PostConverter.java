@@ -1,33 +1,16 @@
 package com.example.justpost.domain.store.post;
 
 import com.example.justpost.domain.OrderColumnIndex;
-import com.example.justpost.domain.Posts;
+import com.example.justpost.domain.Post;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class PostConverter {
-
-    public Posts convert(MultipartFile orderFile) throws Exception {
-        String[][] orderSheet = getOrderSheet(orderFile);
-        OrderColumnIndex orderColumnIndex = getOrderColumnIndex(orderSheet);
-        return Posts.create(orderSheet, orderColumnIndex, this);
-    }
-
-
-    String[][] getOrderSheet(MultipartFile file) throws Exception {
-        Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
-        String[][] orderSheet = ExcelUtil.workbookToArray(
-                orderWorkbook,
-                getSheetIndex(),
-                getHeaderRowIndex());
-
-        // close workbook
-        orderWorkbook.close();
-        return orderSheet;
-    }
-
 
     abstract public String getProduct(String product,
                                       String option,
@@ -35,8 +18,34 @@ public abstract class PostConverter {
 
     abstract OrderColumnIndex getOrderColumnIndex(String[][] orderSheet);
 
-    abstract int getSheetIndex();
+    abstract int getOrderSheetIndex();
 
-    public abstract int getHeaderRowIndex();
+    abstract int getHeaderRowIndex();
 
+
+    public List<Post> convert(MultipartFile orderFile) throws Exception {
+        List<Post> posts = new ArrayList<>();
+        String[][] orderSheet = getOrderSheet(orderFile);
+        OrderColumnIndex orderColumnIndex = getOrderColumnIndex(orderSheet);
+
+        for (int rowIndex = getHeaderRowIndex() + 1; rowIndex < orderSheet.length; rowIndex++) {
+            String[] orderRow = orderSheet[rowIndex];
+            Post post = Post.create(orderRow, orderColumnIndex, this);
+            posts.add(post);
+        }
+
+        return posts;
+    }
+
+    String[][] getOrderSheet(MultipartFile file) throws Exception {
+        Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
+        String[][] orderSheet = ExcelUtil.workbookToArray(
+                orderWorkbook,
+                getOrderSheetIndex(),
+                getHeaderRowIndex());
+
+        // close workbook
+        orderWorkbook.close();
+        return orderSheet;
+    }
 }

@@ -18,7 +18,7 @@ public class NaverPostConverter extends PostConverter {
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 1;
 
-    int getSheetIndex() {
+    int getOrderSheetIndex() {
         return SHEET_INDEX;
     }
 
@@ -27,7 +27,7 @@ public class NaverPostConverter extends PostConverter {
     }
 
 
-    String[][] getOrderSheet(MultipartFile orderFile) throws Exception {
+    public String[][] getOrderSheet(MultipartFile orderFile) throws Exception {
         Workbook orderWorkbook = decryptExcelFile(orderFile);
         String[][] orderSheet = ExcelUtil.workbookToArray(
                 orderWorkbook,
@@ -60,7 +60,7 @@ public class NaverPostConverter extends PostConverter {
                            count);
     }
 
-    OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
+    public OrderColumnIndex getOrderColumnIndex(String[][] orderSheet) {
         String[] orderHeaderRow = orderSheet[HEADER_ROW_INDEX];
 
         return OrderColumnIndex.builder()

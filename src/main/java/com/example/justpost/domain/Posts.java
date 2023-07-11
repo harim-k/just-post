@@ -1,6 +1,7 @@
 package com.example.justpost.domain;
 
 import com.example.justpost.domain.store.post.PostConverter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,25 +10,18 @@ import java.util.Optional;
 public class Posts {
     private final List<Post> posts;
 
-    public Posts() {
+    public Posts(List<Post> posts) {
         this.posts = new ArrayList<>();
+
+        for (Post post : posts) {
+            addOrMerge(post);
+        }
     }
 
-    public static Posts create(String[][] orderSheet,
-                               OrderColumnIndex orderColumnIndex,
-                               PostConverter postConverter) {
-        Posts posts = new Posts();
-
-        for (int rowIndex = postConverter.getHeaderRowIndex() + 1; rowIndex < orderSheet.length; rowIndex++) {
-            String[] orderRow = orderSheet[rowIndex];
-            Order order = Order.create(orderRow, orderColumnIndex);
-            Post post = order.convertToPost(postConverter);
-
-            // 같은 주소인 경우 하나로 합치기
-            posts.addOrMerge(post);
-        }
-
-        return posts;
+    public static Posts create(MultipartFile orderFile,
+                               PostConverter postConverter) throws Exception {
+        List<Post> posts = postConverter.convert(orderFile);
+        return new Posts(posts);
     }
 
     void addOrMerge(Post post) {
@@ -39,8 +33,8 @@ public class Posts {
             posts.add(post);
         } else {
             optionalSamePost.get()
-                    .getProducts()
-                    .addAll(post.getProducts());
+                    .getProduct()
+                    .addAll(post.getProduct());
         }
     }
 

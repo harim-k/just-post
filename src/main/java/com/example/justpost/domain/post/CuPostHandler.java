@@ -98,7 +98,7 @@ public class CuPostHandler extends PostHandler {
         rowValues.add(post.getContact1());
         rowValues.add(post.getContact2());
         rowValues.add(String.join(" ",
-                                  String.join(" ", post.getProducts()),
+                                  post.getProduct().toString(),
                                   post.getMessage()));
         rowValues.add("선불");
         return rowValues;

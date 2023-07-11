@@ -33,7 +33,7 @@ class PostServiceTest {
 
     @Test
     void test_쿠팡_발송처리() throws Exception {
-        final String storeName = "counpang";
+        final String storeName = "coupang";
 
         test_대량발송_파일_변환(ConvertType.COUPANG_POST, storeName);
     }
