@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>just post</title>
+    <meta content="f8c5c5b9b4901ef43322866f04db422ab521f552" name="naver-site-verification"/>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+</head>
+
+<body style="margin-top: 30px;margin-left: 30px;">
+<h1>택배 예약</h1>
+<hr>
+
+<form enctype="multipart/form-data" method="post">
+    1. 스토어 주문 파일 업로드
+    <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
+           title="Upload excel file"
+           type="file">
+
+    <p></p>
+    2. 스토어 선택
+    <input checked name="convertType" type="radio" value="NAVER_POST">네이버
+    <input name="convertType" type="radio" value="COUPANG_POST">쿠팡
+    <input name="convertType" type="radio" value="ABLY_POST">에이블리
+    <p>
+        3.
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/reservation/convert/CJ_POST}" type="submit"
+               value="cj 대량발송 엑셀 파일 다운로드">
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/reservation/convert/GS_POST}" type="submit"
+               value="gs 대량발송 엑셀 파일 다운로드">
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/reservation/convert/CU_POST}" type="submit"
+               value="cu 대량발송 엑셀 파일 다운로드">
+    </p>
+</form>
+
+<p></p>
+<hr>
+
+<hr>
+
+
+<th:block th:each="reservation : ${reservations}">
+    <tr>
+        <td th:text="${reservation.getName()} "></td>
+        <td th:text="${reservation.getPostcode()} "></td>
+        <td th:text="${reservation.getAddress()} "></td>
+        <td th:text="${reservation.getContact1()} "></td>
+        <td th:text="${reservation.getProducts()} "></td>
+        <td th:text="${reservation.getMessage()} "></td>
+    </tr>
+    <br>
+</th:block>
+
+
+<p></p>
+<hr>
+
+<h2><a href="index.html">메인으로 돌아가기</a></h2>
+
+
+</body>
+
+</html>
+
+
+
+

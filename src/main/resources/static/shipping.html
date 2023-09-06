@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>just post</title>
+    <meta content="f8c5c5b9b4901ef43322866f04db422ab521f552" name="naver-site-verification"/>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+</head>
+
+<h1>발송 처리</h1>
+<hr>
+
+<form enctype="multipart/form-data" method="post">
+    1. 스토어 주문 파일 업로드
+    <input name="orderFile" required="required" style="border: 1px solid black; padding: 5px;"
+           title="Upload excel file"
+           type="file">
+    <p></p>
+
+    2. 스토어 선택
+    <input checked name="convertType" type="radio" value="NAVER_AFTER_POST">네이버
+    <input name="convertType" type="radio" value="COUPANG_AFTER_POST">쿠팡
+    <input name="convertType" type="radio" value="ABLY_AFTER_POST">에이블리
+    <p></p>
+
+    3. cj 택배 접수 파일
+    <input name="postFile" style="border: 1px solid black; padding: 5px;"
+           title="Upload excel file"
+           type="file">
+    <p></p>
+
+    <p>
+        3. gs/cu 택배 예약 내역
+        <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="1"></textarea>
+    </p>
+    <p>
+        4.
+        <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
+               th:formaction="@{/afterPost/download}" type="submit"
+               value="발송처리 엑셀 파일 다운로드">
+    <p>
+</form>
+
+<p></p>
+
+
+<hr>
+<th:block th:each="afterPostExcelRow : ${afterPostExcelData}">
+    <th:block th:each="afterPostExcelCell : ${afterPostExcelRow}">
+        <tr>
+            <td th:text="${afterPostExcelCell}"></td>
+        </tr>
+    </th:block>
+    <br>
+</th:block>
+
+
+<p></p>
+
+<hr>
+
+<h2><a href="index.html">메인으로 돌아가기</a></h2>
+
+
+
+</body>
+
+</html>
+
+
+
+
