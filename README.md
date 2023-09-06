@@ -12,7 +12,8 @@
 
 - Deploy
 
-# get in server
-$ ssh.sh
+- get in server
+$ ./ssh.sh
+$ ./deploy.sh
 
 
