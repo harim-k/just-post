@@ -1,3 +1,4 @@
+git reset --hard HEAD
 git pull
 ./gradlew build -x test
 pkill -f 'java -jar'
