@@ -1,6 +1,6 @@
 package com.example.justpost.service.afterPost;
 
-import com.example.justpost.domain.ConvertType;
+import com.example.justpost.domain.post.ConvertType;
 import com.example.justpost.domain.store.afterPost.AfterPostConverter;
 import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
 import com.example.justpost.domain.utils.ExcelUtil;

@@ -1,17 +1,18 @@
 package com.example.justpost.service.afterPost;
 
-import com.example.justpost.domain.ConvertType;
-import com.example.justpost.domain.InvoiceMap;
-import com.example.justpost.domain.post.PostHandler;
-import com.example.justpost.domain.post.PostHandlerFactory;
+import com.example.justpost.domain.post.ConvertType;
+import com.example.justpost.domain.post.InvoiceMap;
+import com.example.justpost.domain.postClient.PostHandler;
+import com.example.justpost.domain.postClient.PostHandlerFactory;
 import com.example.justpost.domain.store.afterPost.AfterPostConverter;
 import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
 import com.example.justpost.domain.utils.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.util.StringUtils;
+
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

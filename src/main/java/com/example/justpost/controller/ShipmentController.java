@@ -1,7 +1,7 @@
 package com.example.justpost.controller;
 
 
-import com.example.justpost.domain.ConvertType;
+import com.example.justpost.domain.post.ConvertType;
 import com.example.justpost.service.afterPost.ShipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

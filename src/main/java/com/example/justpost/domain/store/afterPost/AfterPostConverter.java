@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.afterPost;
 
-import com.example.justpost.domain.InvoiceMap;
+import com.example.justpost.domain.post.InvoiceMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

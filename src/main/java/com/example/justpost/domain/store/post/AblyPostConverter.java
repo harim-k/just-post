@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.post;
 
-import com.example.justpost.domain.OrderColumnIndex;
+import com.example.justpost.domain.post.OrderColumnIndex;
 import org.springframework.stereotype.Component;
 
 import static com.example.justpost.domain.utils.StringUtil.getIndex;

@@ -1,4 +1,4 @@
-package com.example.justpost.domain;
+package com.example.justpost.domain.post;
 
 import com.example.justpost.domain.store.post.PostConverter;
 import org.springframework.web.multipart.MultipartFile;

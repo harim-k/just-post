@@ -1,6 +1,6 @@
 package com.example.justpost.domain.store.post;
 
-import com.example.justpost.domain.ConvertType;
+import com.example.justpost.domain.post.ConvertType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

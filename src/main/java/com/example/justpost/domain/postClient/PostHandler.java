@@ -1,13 +1,10 @@
-package com.example.justpost.domain.post;
+package com.example.justpost.domain.postClient;
 
-import com.example.justpost.domain.InvoiceMap;
-import com.example.justpost.domain.Post;
-import com.example.justpost.domain.Posts;
+import com.example.justpost.domain.post.InvoiceMap;
+import com.example.justpost.domain.post.Posts;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 public abstract class PostHandler {
 

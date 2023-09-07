@@ -1,4 +1,4 @@
-package com.example.justpost.domain;
+package com.example.justpost.domain.post;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

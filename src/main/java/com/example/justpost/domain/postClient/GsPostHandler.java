@@ -1,59 +1,61 @@
-package com.example.justpost.domain.post;
+package com.example.justpost.domain.postClient;
 
-import com.example.justpost.domain.InvoiceMap;
-import com.example.justpost.domain.PostColumnIndex;
-import com.example.justpost.domain.Post;
-import com.example.justpost.domain.Posts;
+import com.example.justpost.domain.post.InvoiceMap;
+import com.example.justpost.domain.post.Post;
+import com.example.justpost.domain.post.Posts;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static com.example.justpost.domain.utils.StringUtil.getIndex;
-
 @Component
-public class CjPostHandler extends PostHandler {
-    public static final String POST_FILE_NAME = "cj_post.xlsx";
-    public static final String POST_TEMPLATE_FILE_NAME = "cj_post_template.xlsx";
+public class GsPostHandler extends PostHandler {
+    public static final String POST_FILE_NAME = "gs_post.xls";
+    public static final String POST_TEMPLATE_FILE_NAME = "gs_post_template.xls";
     public static final int SHEET_INDEX = 0;
     public static final int HEADER_ROW_INDEX = 0;
 
 
     @Override
     public InvoiceMap getInvoiceMap(String postString) {
-        return null;
-    }
-
-    @Override
-    public InvoiceMap getInvoiceMap(MultipartFile postFile) throws Exception {
         InvoiceMap invoiceMap = new InvoiceMap();
 
-        Workbook postWorkbook = WorkbookFactory.create(postFile.getInputStream());
-        String[][] postSheet = ExcelUtil.workbookToArray(postWorkbook, SHEET_INDEX, HEADER_ROW_INDEX);
+        String[] strings = postString.replace("\r\n", "")
+                .replace("\n", "")
+                .split("수신정보")[1]
+                .split("선불");
 
-        PostColumnIndex postColumnIndex = getPostColumnIndex(postSheet);
+        strings = Arrays.copyOfRange(strings, 0, strings.length - 1);
 
-        for (int rowIndex = HEADER_ROW_INDEX + 1; rowIndex < postSheet.length; rowIndex++) {
-            String[] postRow = postSheet[rowIndex];
+        final String delimeter = strings[0].contains("반품") ? "반품" : "Address";
 
-            String name = postRow[postColumnIndex.getNameColumnIndex()];
-            String postcode = postRow[postColumnIndex.getPostcodeColumnIndex()];
-            String invoiceNumber = StringUtils.replace(postRow[postColumnIndex.getInvoiceNumberColumnIndex()], "-", "");
+        for (String string : strings) {
+            String name = string.split(delimeter)[0];
+            String postcode = string.split("\\[")[1]
+                    .split("]")[0];
+            String invoiceNumber = string.split("운송장번호")[1]
+                    .split("Comment")[0];
 
             invoiceMap.put(postcode, invoiceNumber);
         }
 
         return invoiceMap;
     }
+
+    @Override
+    public InvoiceMap getInvoiceMap(MultipartFile postFile) {
+        return null;
+    }
+
 
     @Override
     public String getPostFilePath(String storeName) {
@@ -67,7 +69,7 @@ public class CjPostHandler extends PostHandler {
 
     @Override
     Workbook convertToWorkbook(Posts posts) throws Exception {
-        Workbook postWorkbook = new XSSFWorkbook();
+        Workbook postWorkbook = new HSSFWorkbook();
         Workbook postTemplateWorkbook = WorkbookFactory.create(
                 new FileInputStream(getPostTemplateFilePath()));
 
@@ -85,7 +87,6 @@ public class CjPostHandler extends PostHandler {
                              convertToForm(post),
                              HEADER_ROW_INDEX + i + 1);
         }
-
         postTemplateWorkbook.close();
 
         return postWorkbook;
@@ -95,22 +96,16 @@ public class CjPostHandler extends PostHandler {
         List<String> rowValues = new ArrayList<>();
 
         rowValues.add(post.getName());
-        rowValues.add(post.getContact1());
+        rowValues.add(post.getPostcode());
         rowValues.add(post.getAddress());
-        rowValues.add(post.getProduct().toString());
-        rowValues.add(String.valueOf(post.getProduct().size()));
-        rowValues.add(post.getMessage());
+        rowValues.add(post.getAddress());
+        rowValues.add(post.getContact1());
+        rowValues.add(post.getContact2());
+        rowValues.add(String.join(" ",
+                                  post.getProduct().toString(),
+                                  post.getMessage()));
+        rowValues.add("선불");
 
         return rowValues;
-    }
-
-    PostColumnIndex getPostColumnIndex(String[][] postSheet) {
-        String[] headerRow = postSheet[HEADER_ROW_INDEX];
-
-        return PostColumnIndex.builder()
-                .nameColumnIndex(getIndex(headerRow, "받는분"))
-                .postcodeColumnIndex(getIndex(headerRow, "받는분  우편번호"))
-                .invoiceNumberColumnIndex(getIndex(headerRow, "운송장번호"))
-                .build();
     }
 }

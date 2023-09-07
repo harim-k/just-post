@@ -1,8 +1,8 @@
-package com.example.justpost.domain.post;
+package com.example.justpost.domain.postClient;
 
-import com.example.justpost.domain.InvoiceMap;
-import com.example.justpost.domain.Post;
-import com.example.justpost.domain.Posts;
+import com.example.justpost.domain.post.InvoiceMap;
+import com.example.justpost.domain.post.Post;
+import com.example.justpost.domain.post.Posts;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.ss.usermodel.Sheet;

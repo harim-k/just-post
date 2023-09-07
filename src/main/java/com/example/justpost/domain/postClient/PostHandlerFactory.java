@@ -1,9 +1,10 @@
-package com.example.justpost.domain.post;
+package com.example.justpost.domain.postClient;
 
-import com.example.justpost.domain.DownloadType;
+import com.example.justpost.domain.post.DownloadType;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.util.StringUtils;
+
 
 @Component
 @RequiredArgsConstructor

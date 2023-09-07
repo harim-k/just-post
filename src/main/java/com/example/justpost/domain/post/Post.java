@@ -1,9 +1,10 @@
-package com.example.justpost.domain;
+package com.example.justpost.domain.post;
 
 import com.example.justpost.domain.store.post.PostConverter;
 import lombok.Builder;
 import lombok.Data;
-import org.thymeleaf.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 
 @Data
 @Builder

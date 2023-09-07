@@ -1,7 +1,7 @@
 package com.example.justpost.domain.store.post;
 
-import com.example.justpost.domain.OrderColumnIndex;
-import com.example.justpost.domain.Post;
+import com.example.justpost.domain.post.OrderColumnIndex;
+import com.example.justpost.domain.post.Post;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;

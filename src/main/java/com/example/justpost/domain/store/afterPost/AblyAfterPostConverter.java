@@ -1,7 +1,7 @@
 package com.example.justpost.domain.store.afterPost;
 
-import com.example.justpost.domain.InvoiceMap;
-import com.example.justpost.domain.PostColumnIndex;
+import com.example.justpost.domain.post.InvoiceMap;
+import com.example.justpost.domain.post.PostColumnIndex;
 import com.example.justpost.domain.utils.ExcelUtil;
 import com.example.justpost.domain.utils.FileUtil;
 import org.apache.poi.ss.usermodel.Sheet;
