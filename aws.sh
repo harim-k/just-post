@@ -1,4 +1,5 @@
-git pull -f
+git reset --hard HEAD
+git pull
 ./gradlew build -x test
 pkill -f 'java -jar'
 nohup java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar &
