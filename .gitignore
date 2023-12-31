@@ -5,13 +5,20 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+!**/src/main/resources/post
+!**/src/main/resources/after-post
+!**/src/main/resources/merge
+
 **/src/main/resources/post/*
 **/src/main/resources/after-post/*
 **/src/main/resources/merge/*
 
-!**/src/main/resources/post/
-!**/src/main/resources/after-post/
-!**/src/main/resources/merge/
+!**/src/main/resources/post/sample
+!**/src/main/resources/after-post/sample
+!**/src/main/resources/merge/sample
+
+
+
 
 *.pem
 ssh.sh
