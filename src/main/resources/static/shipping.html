@@ -32,12 +32,12 @@
 
     <p>
         3. gs/cu 택배 예약 내역
-        <textarea cols="50" id="afterPostString" name="afterPostString" placeholder="송장번호 정보 입력" rows="1"></textarea>
+        <textarea cols="50" id="shipmentString" name="shipmentString" placeholder="송장번호 정보 입력" rows="1"></textarea>
     </p>
     <p>
         4.
         <input style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;"
-               formaction="/afterPost/download" type="submit"
+               formaction="/shipment/convert" type="submit"
                value="발송처리 엑셀 파일 다운로드">
     <p>
 </form>
@@ -46,10 +46,10 @@
 
 
 <hr>
-<th:block th:each="afterPostExcelRow : ${afterPostExcelData}">
-    <th:block th:each="afterPostExcelCell : ${afterPostExcelRow}">
+<th:block th:each="shipmentExcelRow : ${shipmentExcelData}">
+    <th:block th:each="shipmentExcelCell : ${shipmentExcelRow}">
         <tr>
-            <td th:text="${afterPostExcelCell}"></td>
+            <td th:text="${shipmentExcelCell}"></td>
         </tr>
     </th:block>
     <br>

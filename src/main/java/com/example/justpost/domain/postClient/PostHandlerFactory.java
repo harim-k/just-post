@@ -14,10 +14,10 @@ public class PostHandlerFactory {
     private final CuPostHandler cuPostHandler;
 
 
-    public PostHandler get(String afterPostString) {
-        if (StringUtils.equals(afterPostString, "")) {
+    public PostHandler get(String shipmentString) {
+        if (StringUtils.equals(shipmentString, "")) {
             return cjPostHandler;
-        } else if (afterPostString.contains("CUPOST")) {
+        } else if (shipmentString.contains("CUPOST")) {
             return cuPostHandler;
         } else {
             return gsPostHandler;

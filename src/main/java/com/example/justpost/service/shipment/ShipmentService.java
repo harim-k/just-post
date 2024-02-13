@@ -1,18 +1,17 @@
-package com.example.justpost.service.afterPost;
+package com.example.justpost.service.shipment;
 
 import com.example.justpost.domain.post.ConvertType;
 import com.example.justpost.domain.post.InvoiceMap;
 import com.example.justpost.domain.postClient.PostHandler;
 import com.example.justpost.domain.postClient.PostHandlerFactory;
-import com.example.justpost.domain.store.afterPost.AfterPostConverter;
-import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
+import com.example.justpost.domain.store.shipment.ShipmentConverter;
+import com.example.justpost.domain.store.shipment.ShipmentConverterFactory;
 import com.example.justpost.domain.utils.FileUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ShipmentService {
 
-    private final AfterPostConverterFactory afterPostConverterFactory;
+    private final ShipmentConverterFactory shipmentConverterFactory;
     private final PostHandlerFactory postHandlerFactory;
 
     @SneakyThrows
@@ -31,7 +30,7 @@ public class ShipmentService {
                                              MultipartFile postFile,
                                              String postString) {
 
-        AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
+        ShipmentConverter shipmentConverter = shipmentConverterFactory.get(convertType);
         PostHandler postHandler = postHandlerFactory.get(postString);
         InvoiceMap invoiceMap;
         if (StringUtils.equals(postString, "")) {
@@ -40,16 +39,16 @@ public class ShipmentService {
             invoiceMap = postHandler.getInvoiceMap(postString);
         }
 
-        List<List<String>> afterPostValues = afterPostConverter.convertAndSave(orderFile, invoiceMap);
+        List<List<String>> shipmentValues = shipmentConverter.convertAndSave(orderFile, invoiceMap);
 
-        return afterPostValues;
+        return shipmentValues;
     }
 
 
     public void downloadFile(HttpServletResponse response,
                              ConvertType convertType) throws IOException {
-        AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
-        String filePath = afterPostConverter.getAfterPostFilePath();
+        ShipmentConverter shipmentConverter = shipmentConverterFactory.get(convertType);
+        String filePath = shipmentConverter.getShipmentFilePath();
         FileUtil.downloadFile(response, filePath);
     }
 }

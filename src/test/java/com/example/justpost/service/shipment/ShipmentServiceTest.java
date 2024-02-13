@@ -1,8 +1,8 @@
-package com.example.justpost.service.afterPost;
+package com.example.justpost.service.shipment;
 
 import com.example.justpost.domain.post.ConvertType;
-import com.example.justpost.domain.store.afterPost.AfterPostConverter;
-import com.example.justpost.domain.store.afterPost.AfterPostConverterFactory;
+import com.example.justpost.domain.store.shipment.ShipmentConverter;
+import com.example.justpost.domain.store.shipment.ShipmentConverterFactory;
 import com.example.justpost.domain.utils.ExcelUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,61 +24,61 @@ class ShipmentServiceTest {
     @Autowired
     private ShipmentService shipmentService;
     @Autowired
-    private AfterPostConverterFactory afterPostConverterFactory;
+    private ShipmentConverterFactory shipmentConverterFactory;
 
     @Test
     void test_네이버_발송처리_파일_변환() throws Exception {
         final String orderFileName = "네이버_주문.xlsx";
-        final String afterPostFileName = "네이버_발송처리.xls";
-        final String afterPostStringFileName = "네이버_택배발송정보";
+        final String shipmentFileName = "네이버_발송처리.xls";
+        final String shipmentStringFileName = "네이버_택배발송정보";
 
         test_발송처리_파일_변환(ConvertType.NAVER_AFTER_POST, orderFileName,
-                        afterPostFileName, afterPostStringFileName);
+                        shipmentFileName, shipmentStringFileName);
     }
 
     @Test
     void test_쿠팡_발송처리_파일_변환() throws Exception {
         final String orderFileName = "쿠팡_주문.xlsx";
-        final String afterPostFileName = "쿠팡_발송처리.xlsx";
-        final String afterPostStringFileName = "쿠팡_택배발송정보";
+        final String shipmentFileName = "쿠팡_발송처리.xlsx";
+        final String shipmentStringFileName = "쿠팡_택배발송정보";
 
         test_발송처리_파일_변환(ConvertType.COUPANG_AFTER_POST, orderFileName,
-                        afterPostFileName, afterPostStringFileName);
+                        shipmentFileName, shipmentStringFileName);
     }
 
     @Test
     void test_에이블리_발송처리_파일_변환() throws Exception {
         final String orderFileName = "에이블리_주문.xlsx";
-        final String afterPostFileName = "에이블리_발송처리.xlsx";
-        final String afterPostStringFileName = "에이블리_택배발송정보";
+        final String shipmentFileName = "에이블리_발송처리.xlsx";
+        final String shipmentStringFileName = "에이블리_택배발송정보";
 
         test_발송처리_파일_변환(ConvertType.ABLY_AFTER_POST, orderFileName,
-                        afterPostFileName, afterPostStringFileName);
+                        shipmentFileName, shipmentStringFileName);
     }
 
     @Test
     void test_에이블리_발송처리_파일_변환2() throws Exception {
         final String orderFileName = "에이블리_주문2.xlsx";
-        final String afterPostFileName = "에이블리_발송처리2.xlsx";
+        final String shipmentFileName = "에이블리_발송처리2.xlsx";
         final String postFileName = "에이블리_택배발송정보2.xls";
 
         test_발송처리_파일_변환2(ConvertType.ABLY_AFTER_POST, orderFileName,
-                        afterPostFileName, postFileName);
+                        shipmentFileName, postFileName);
     }
 
     void test_발송처리_파일_변환(ConvertType convertType,
                          String orderFileName,
-                         String afterPostFileName,
-                         String afterPostStringFileName) throws Exception {
-        AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
+                         String shipmentFileName,
+                         String shipmentStringFileName) throws Exception {
+        ShipmentConverter shipmentConverter = shipmentConverterFactory.get(convertType);
 
         final String orderFilePath = TEST_ORDER_FILE_PATH + orderFileName;
 
-        final String afterPostStringFilePath = TEST_AFTER_POST_FILE_PATH + afterPostStringFileName;
-        final String afterPostString = new String(Files.readAllBytes(Paths.get(afterPostStringFilePath)));
+        final String shipmentStringFilePath = TEST_AFTER_POST_FILE_PATH + shipmentStringFileName;
+        final String shipmentString = new String(Files.readAllBytes(Paths.get(shipmentStringFilePath)));
 
-        final String actualAfterPostFilePath = afterPostConverter.getAfterPostFilePath();
-        final String expectedAfterPostFilePath = TEST_AFTER_POST_FILE_PATH + afterPostFileName;
+        final String actualShipmentFilePath = shipmentConverter.getShipmentFilePath();
+        final String expectedShipmentFilePath = TEST_AFTER_POST_FILE_PATH + shipmentFileName;
 
         int sheetIndex = convertType != ConvertType.ABLY_AFTER_POST ? 0 : 1;
 
@@ -86,22 +86,22 @@ class ShipmentServiceTest {
 
         shipmentService.convertAndSave(
                 orderFile, convertType,
-                null, afterPostString);
+                null, shipmentString);
 
-        assertThat(ExcelUtil.compare(actualAfterPostFilePath, expectedAfterPostFilePath, sheetIndex)).isTrue();
+        assertThat(ExcelUtil.compare(actualShipmentFilePath, expectedShipmentFilePath, sheetIndex)).isTrue();
     }
 
     void test_발송처리_파일_변환2(ConvertType convertType,
                          String orderFileName,
-                         String afterPostFileName,
+                         String shipmentFileName,
                          String postFileName) throws Exception {
-        AfterPostConverter afterPostConverter = afterPostConverterFactory.get(convertType);
+        ShipmentConverter shipmentConverter = shipmentConverterFactory.get(convertType);
 
         final String orderFilePath = TEST_ORDER_FILE_PATH + orderFileName;
         final String postFilePath = TEST_AFTER_POST_FILE_PATH + postFileName;
 
-        final String actualAfterPostFilePath = afterPostConverter.getAfterPostFilePath();
-        final String expectedAfterPostFilePath = TEST_AFTER_POST_FILE_PATH + afterPostFileName;
+        final String actualShipmentFilePath = shipmentConverter.getShipmentFilePath();
+        final String expectedShipmentFilePath = TEST_AFTER_POST_FILE_PATH + shipmentFileName;
 
         int sheetIndex = convertType != ConvertType.ABLY_AFTER_POST ? 0 : 1;
 
@@ -113,7 +113,7 @@ class ShipmentServiceTest {
                 orderFile, convertType,
                 postFile, "");
 
-        assertThat(ExcelUtil.compare(actualAfterPostFilePath, expectedAfterPostFilePath, sheetIndex)).isTrue();
+        assertThat(ExcelUtil.compare(actualShipmentFilePath, expectedShipmentFilePath, sheetIndex)).isTrue();
     }
 
 

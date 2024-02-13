@@ -1,4 +1,4 @@
-package com.example.justpost.domain.store.afterPost;
+package com.example.justpost.domain.store.shipment;
 
 import com.example.justpost.domain.post.InvoiceMap;
 import com.example.justpost.domain.post.PostColumnIndex;
@@ -16,7 +16,7 @@ import java.util.List;
 import static com.example.justpost.domain.utils.StringUtil.getIndex;
 
 @Component
-public class AblyAfterPostConverter extends AfterPostConverter {
+public class AblyShipmentConverter extends ShipmentConverter {
     public static final int SHEET_INDEX = 1;
     public static final int HEADER_ROW_INDEX = 0;
     public static final String AFTER_POST_FILE_NAME = "ably_after_post.xlsx";
@@ -24,7 +24,7 @@ public class AblyAfterPostConverter extends AfterPostConverter {
     @Override
     public List<List<String>> convertAndSave(MultipartFile file,
                                              InvoiceMap invoiceMap) throws Exception {
-        List<List<String>> afterPostValues = new ArrayList<>();
+        List<List<String>> shipmentValues = new ArrayList<>();
 
         Workbook orderWorkbook = WorkbookFactory.create(file.getInputStream());
         Sheet orderSheet = orderWorkbook.getSheetAt(SHEET_INDEX);
@@ -42,20 +42,20 @@ public class AblyAfterPostConverter extends AfterPostConverter {
 
             // 에이블리는 주문 엑셀 파일에 운송장번호를 넣어 업로드하는 구조
             orderSheet.getRow(rowIndex).createCell(5).setCellValue(invoiceNumber);
-            afterPostValues.add(ExcelUtil.getValues(orderSheet.getRow(rowIndex)));
+            shipmentValues.add(ExcelUtil.getValues(orderSheet.getRow(rowIndex)));
         }
 
         // save after post workbook
-        ExcelUtil.save(orderWorkbook, getAfterPostFilePath());
+        ExcelUtil.save(orderWorkbook, getShipmentFilePath());
 
         // close workbook
         orderWorkbook.close();
 
-        return afterPostValues;
+        return shipmentValues;
     }
 
     @Override
-    public String getAfterPostFilePath() {
+    public String getShipmentFilePath() {
         return FileUtil.AFTER_POST_FILE_PATH + AFTER_POST_FILE_NAME;
     }
 

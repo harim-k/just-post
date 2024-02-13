@@ -2,7 +2,7 @@ package com.example.justpost.controller;
 
 
 import com.example.justpost.domain.post.ConvertType;
-import com.example.justpost.service.afterPost.ShipmentService;
+import com.example.justpost.service.shipment.ShipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +27,11 @@ public class ShipmentController {
                         @RequestParam("orderFile") MultipartFile orderFile,
                         @RequestParam("convertType") ConvertType convertType,
                         @RequestParam(value = "postFile", required = false) MultipartFile postFile,
-                        @RequestParam(value = "afterPostString", required = false) String afterPostString,
+                        @RequestParam(value = "shipmentString", required = false) String shipmentString,
                         Model model) {
-        List<List<String>> afterPostValues = shipmentService.convertAndSave(
-                orderFile, convertType, postFile, afterPostString);
-        model.addAttribute("afterPostExcelData", afterPostValues);
+        List<List<String>> shipmentValues = shipmentService.convertAndSave(
+                orderFile, convertType, postFile, shipmentString);
+        model.addAttribute("shipmentExcelData", shipmentValues);
 
         try {
             shipmentService.downloadFile(response, convertType);
