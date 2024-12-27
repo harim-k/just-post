@@ -7,7 +7,7 @@
 
 - Start the java server,
 
-  local : `./run.sh` or `java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar`
+  local : `java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar`
   AWS   : `./aws.sh` or `nohup java -jar build/libs/just-post-0.0.1-SNAPSHOT.jar &`
 
 - Deploy
