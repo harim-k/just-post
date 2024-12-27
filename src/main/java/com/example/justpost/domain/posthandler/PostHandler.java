@@ -1,4 +1,4 @@
-package com.example.justpost.domain.postClient;
+package com.example.justpost.domain.posthandler;
 
 import com.example.justpost.domain.post.InvoiceMap;
 import com.example.justpost.domain.post.Posts;

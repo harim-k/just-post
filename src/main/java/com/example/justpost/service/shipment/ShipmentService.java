@@ -2,8 +2,8 @@ package com.example.justpost.service.shipment;
 
 import com.example.justpost.domain.post.ConvertType;
 import com.example.justpost.domain.post.InvoiceMap;
-import com.example.justpost.domain.postClient.PostHandler;
-import com.example.justpost.domain.postClient.PostHandlerFactory;
+import com.example.justpost.domain.posthandler.PostHandler;
+import com.example.justpost.domain.posthandler.PostHandlerFactory;
 import com.example.justpost.domain.store.shipment.ShipmentConverter;
 import com.example.justpost.domain.store.shipment.ShipmentConverterFactory;
 import com.example.justpost.domain.utils.FileUtil;

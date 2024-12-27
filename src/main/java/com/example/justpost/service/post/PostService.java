@@ -3,7 +3,7 @@ package com.example.justpost.service.post;
 import com.example.justpost.domain.post.ConvertType;
 import com.example.justpost.domain.post.DownloadType;
 import com.example.justpost.domain.post.Posts;
-import com.example.justpost.domain.postClient.*;
+import com.example.justpost.domain.posthandler.*;
 import com.example.justpost.domain.store.post.PostConverter;
 import com.example.justpost.domain.store.post.PostConverterFactory;
 import com.example.justpost.domain.utils.FileUtil;
