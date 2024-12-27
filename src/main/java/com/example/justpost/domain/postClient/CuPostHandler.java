@@ -78,9 +78,7 @@ public class CuPostHandler extends PostHandler {
         for (int i = 0; i < posts.size(); i++) {
             Post post = posts.get(i);
 
-            ExcelUtil.setRow(postSheet,
-                             convertToForm(post),
-                             HEADER_ROW_INDEX + i + 1);
+            ExcelUtil.setRow(postSheet, convertToForm(post), HEADER_ROW_INDEX + i + 1);
         }
 
         postTemplateWorkbook.close();
@@ -92,15 +90,15 @@ public class CuPostHandler extends PostHandler {
         List<String> rowValues = new ArrayList<>();
 
         rowValues.add(post.getName());
-        rowValues.add(post.getPostcode());
         rowValues.add(post.getAddress());
         rowValues.add(post.getAddress());
         rowValues.add(post.getContact1());
         rowValues.add(post.getContact2());
         rowValues.add(String.join(" ",
-                                  post.getProduct().toString(),
-                                  post.getMessage()));
+                post.getProduct().toString(),
+                post.getMessage()));
         rowValues.add("선불");
+
         return rowValues;
     }
 }

@@ -39,9 +39,7 @@ public class ShipmentService {
             invoiceMap = postHandler.getInvoiceMap(postString);
         }
 
-        List<List<String>> shipmentValues = shipmentConverter.convertAndSave(orderFile, invoiceMap);
-
-        return shipmentValues;
+        return shipmentConverter.convertAndSave(orderFile, invoiceMap);
     }
 
 
